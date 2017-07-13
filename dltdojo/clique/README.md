@@ -19,17 +19,16 @@ $ docker-compose up -d
 ### Build a dltdojo volume for foonet1
 
 ```
-$ docker pull dltdojo/clique:1.6.6
-$ docker run -it -v dltdojo:/dltdojo dltdojo/clique:1.6.6 ./build.sh foonet1 4
-
-=== node0 address/password ===
-e5aa4d1e8d86fe8b7149f806a060600db895f38a
-=== node1 address/password ===
-9b1b36d3b2b6c55bd6a829d9d06e839a8ff80875
-=== node2 address/password ===
-29b1bb318a23f40fc891fda44d4023fb4344e09a
-=== node3 address/password ===
-b0b46097790b3ca975fab7380b4fc5858ab189f6
+$ docker pull dltdojo/clique:1.6.7
+$ docker run -it -v dltdojo:/dltdojo dltdojo/clique:1.6.7 ./build.sh foonet1 4
+=== node0 address ===
+5a4fd3bbf395670b099fbe8cdf36575432b4c040
+=== node1 address ===
+c2520a7a9b710223be7dbc02cf18c82b4ca4abe5
+=== node2 address ===
+98825c22bf030be8c6eeee6af753ae9799896045
+=== node3 address ===
+a9dcf47fb8b0c4b76a00dee745b5f6a11d33eda5
 +-----------------------------------------------------------+
 | Welcome to puppeth, your Ethereum private network manager |
 |                                                           |
@@ -46,8 +45,8 @@ Please specify a network name to administer (no spaces, please)
 > foonet1
 Sweet, you can set this via --network=foonet1 next time!
 
-INFO [07-07|03:38:49] Administering Ethereum network           name=foonet1
-WARN [07-07|03:38:49] No previous configurations found         path=/root/.puppeth/foonet1
+INFO [07-13|07:33:46] Administering Ethereum network           name=foonet1
+WARN [07-13|07:33:46] No previous configurations found         path=/root/.puppeth/foonet1
 
 What would you like to do? (default = stats)
  1. Show network stats
@@ -65,12 +64,12 @@ How many seconds should blocks take? (default = 15)
 >
 
 Which accounts are allowed to seal? (mandatory at least one)
-> 0xe5aa4d1e8d86fe8b7149f806a060600db895f38a
+> 0x5a4fd3bbf395670b099fbe8cdf36575432b4c040
 > 0x
 
 Which accounts should be pre-funded? (advisable at least one)
-> 0xe5aa4d1e8d86fe8b7149f806a060600db895f38a
-> 0x9b1b36d3b2b6c55bd6a829d9d06e839a8ff80875
+> 0x5a4fd3bbf395670b099fbe8cdf36575432b4c040
+> 0xc2520a7a9b710223be7dbc02cf18c82b4ca4abe5
 > 0x
 
 
@@ -78,7 +77,7 @@ Specify your chain/network ID if you want an explicit one (default = random)
 >
 
 Anything fun to embed into the genesis block? (max 32 bytes)
-> DLTDOJO TESTNET
+> DLTDOJO
 
 What would you like to do? (default = stats)
  1. Show network stats
@@ -89,7 +88,7 @@ What would you like to do? (default = stats)
 
 Which file to save the genesis into? (default = foonet1.json)
 >
-INFO [07-07|03:39:27] Exported existing genesis block
+INFO [07-13|07:34:29] Exported existing genesis block
 
 What would you like to do? (default = stats)
  1. Show network stats
@@ -99,22 +98,22 @@ What would you like to do? (default = stats)
 > ^C/dltdojo/foonet1
 ├── foonet1.json
 ├── node0
-│   ├── UTC--2017-07-07T03-37-41.978421537Z--e5aa4d1e8d86fe8b7149f806a060600db895f38a
+│   ├── UTC--2017-07-13T07-33-33.584964071Z--5a4fd3bbf395670b099fbe8cdf36575432b4c040
 │   └── passfile
 ├── node1
-│   ├── UTC--2017-07-07T03-37-42.758869576Z--9b1b36d3b2b6c55bd6a829d9d06e839a8ff80875
+│   ├── UTC--2017-07-13T07-33-34.325366781Z--c2520a7a9b710223be7dbc02cf18c82b4ca4abe5
 │   └── passfile
 ├── node2
-│   ├── UTC--2017-07-07T03-37-43.543836899Z--29b1bb318a23f40fc891fda44d4023fb4344e09a
+│   ├── UTC--2017-07-13T07-33-35.068764898Z--98825c22bf030be8c6eeee6af753ae9799896045
 │   └── passfile
 └── node3
-    ├── UTC--2017-07-07T03-37-44.328490481Z--b0b46097790b3ca975fab7380b4fc5858ab189f6
+    ├── UTC--2017-07-13T07-33-35.813409712Z--a9dcf47fb8b0c4b76a00dee745b5f6a11d33eda5
     └── passfile
 
 4 directories, 9 files
 === foonet1.json ===
 {
-  "chainId": 2215,
+  "chainId": 25116,
   "homesteadBlock": 1,
   "eip150Block": 2,
   "eip150Hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -125,6 +124,7 @@ What would you like to do? (default = stats)
     "epoch": 30000
   }
 }
+
 ```
 
 ### Let docker-compose up
