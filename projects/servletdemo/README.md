@@ -1,5 +1,6 @@
 ### Building Java Web Applications
 
+* https://github.com/yhjhoo/GradleServlet3
 * https://github.com/jaypee2016/SimpleServletGradleGretty
 * https://github.com/duongphuhiep/servlet-jdbc-gradle-boilerplate
 * https://guides.gradle.org/building-java-web-applications/

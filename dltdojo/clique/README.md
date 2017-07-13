@@ -9,8 +9,8 @@
 * Signer: node0
 
 ```
-$ docker pull dltdojo/clique:1.6.6
-$ docker run -it -v dltdojo:/dltdojo dltdojo/clique:1.6.6 ./build.sh foonet1 4
+$ docker pull dltdojo/clique:1.6.7
+$ docker run -it -v dltdojo:/dltdojo dltdojo/clique:1.6.7 ./build.sh foonet1 4
 $ curl -o docker-compose.yml https://raw.githubusercontent.com/y12studio/dltdojo/master/docker/clique/docker-compose.yml
 $ sed -i.bak -e 's/cqnet1/foonet1/' docker-compose.yml
 $ docker-compose up -d
