@@ -1,0 +1,38 @@
+version: '2'
+services:
+  ca:
+    image: hyperledger/fabric-ca:x86_64-1.0.0
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+    volumes:
+      - ddjfab-ca:/etc/hyperledger
+    command: "fabric-ca-server start -b admin:adminPass"
+  admin:
+    image: hyperledger/fabric-ca:x86_64-1.0.0
+    environment:
+      - FABRIC_CA_CLIENT_HOME=/etc/hyperledger/clients/admin
+    volumes:
+      - ddjfab-ca:/etc/hyperledger
+    command: "tail -f /dev/null"
+  peer1:
+    image: hyperledger/fabric-ca:x86_64-1.0.0
+    environment:
+      - FABRIC_CA_CLIENT_HOME=/etc/hyperledger/clients/peer1
+    volumes:
+      - ddjfab-ca:/etc/hyperledger
+    command: "tail -f /dev/null"
+  alice:
+    image: hyperledger/fabric-ca:x86_64-1.0.0
+    environment:
+      - FABRIC_CA_CLIENT_HOME=/etc/hyperledger/clients/alice
+    volumes:
+      - ddjfab-ca:/etc/hyperledger
+    command: "tail -f /dev/null"
+  ddjnode:
+    image: dltdojo/node:8
+    volumes:
+      - ddjfab-ca:/ddj/ca
+    command: "tail -f /dev/null"
+volumes:
+  ddjfab-ca:
+    external: true

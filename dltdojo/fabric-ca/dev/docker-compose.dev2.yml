@@ -1,0 +1,15 @@
+version: '2'
+services:
+  ca:
+    image: hyperledger/fabric-ca:x86_64-1.0.0
+    volumes:
+      - ddj-fabric-ca:/etc/hyperledger
+    command: "fabric-ca-server start -b admin:adminPass"
+  ddjnode:
+    image: dltdojo/node:8
+    volumes:
+      - ddj-fabric-ca:/etc/hyperledger
+    command: "tail -f /dev/null"
+volumes:
+  ddj-fabric-ca:
+    external: true
