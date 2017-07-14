@@ -425,6 +425,36 @@ dp3xTC4fiuGDo5Qo
 -----END CERTIFICATE-----
 ```
 
+### 檢視alice的keystore與BCCSP設定
+
+* BCCSP (BlockChain Crypto Service Provider) SW: https://github.com/hyperledger/fabric/tree/master/bccsp/sw
+* Signature Algorithm: ecdsa-with-SHA256
+
+```
+$ docker-compose exec ddjnode cat /ddj/ca/clients/alice/msp/keystore/27fea3c48558e1b0c431e6a9c842a90ffbc858bb4e04b0dcbcd91e213f2f3da6_sk
+-----BEGIN PRIVATE KEY-----
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgnNmCWVpIStOr1Nuy
+KQEtIHBr1yYQBoq158Md89G60GKhRANCAAQabA0o6J0PhYQShu+sWuwdXH+h4pxY
+p6oqI7Nu5559DFWJ0ePVz8e+xhUpee6dPIzXn0hKFLCk1gybUOcmpcDp
+-----END PRIVATE KEY-----
+
+$ docker-compose exec ddjnode cat /ddj/ca/clients/alice/fabric-ca-client-config.yaml
+
+#############################################################################
+# BCCSP (BlockChain Crypto Service Provider) section allows to select which
+# crypto implementation library to use
+#############################################################################
+bccsp:
+    default: SW
+    sw:
+        hash: SHA2
+        security: 256
+        filekeystore:
+            # The directory used for the software file-based keystore
+            keystore: msp/keystore
+
+```
+
 ### 註冊員admin註冊新節點peer1
 ```
 $ docker-compose exec admin fabric-ca-client register --id.name peer1 --id.type peer --id.affiliation org2.department1 --id.secret peer1pw
