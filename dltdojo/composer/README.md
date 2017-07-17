@@ -209,6 +209,148 @@ CONTAINER ID        IMAGE                                              COMMAND  
 6bf7213d19be        hyperledger/fabric-orderer:x86_64-1.0.0            "orderer"                7 minutes ago       Up 7 minutes        0.0.0.0:7050->7050/tcp                           orderer.example.com
 b0f65118342a        hyperledger/fabric-couchdb:x86_64-1.0.0            "tini -- /docker-e..."   7 minutes ago       Up 7 minutes        4369/tcp, 9100/tcp, 0.0.0.0:5984->5984/tcp       couchdb
 8b0917f4368d        hyperledger/fabric-ca:x86_64-1.0.0                 "sh -c 'fabric-ca-..."   7 minutes ago       Up 7 minutes        0.0.0.0:7054->7054/tcp                           ca.org1.example.com
+```
+### composer files
+```
+$ tree composer-data/
+composer-data/
+├── docker-compose-playground.yml
+└── fabric-dev-servers
+    ├── createComposerProfile.sh
+    ├── downloadFabric.sh
+    ├── fabric-scripts
+    │   ├── hlfv0.6
+    │   │   ├── createComposerProfile.sh
+    │   │   ├── docker-compose.yml
+    │   │   ├── downloadFabric.sh
+    │   │   ├── README.md
+    │   │   ├── startFabric.sh
+    │   │   ├── stopFabric.sh
+    │   │   └── teardownFabric.sh
+    │   └── hlfv1
+    │       ├── composer
+    │       │   ├── composer-channel.tx
+    │       │   ├── composer-genesis.block
+    │       │   ├── configtx.yaml
+    │       │   ├── creds
+    │       │   │   ├── 114aab0e76bf0c78308f89efc4b8c9423e31568da0c340ca187a9b17aa9a4457-priv
+    │       │   │   ├── 114aab0e76bf0c78308f89efc4b8c9423e31568da0c340ca187a9b17aa9a4457-pub
+    │       │   │   └── PeerAdmin
+    │       │   ├── crypto-config
+    │       │   │   ├── ordererOrganizations
+    │       │   │   │   └── example.com
+    │       │   │   │       ├── ca
+    │       │   │   │       │   ├── 5a6c4ce688103f8220147c6f8257eefbb5a1a8a80220c720d8152a2158021893_sk
+    │       │   │   │       │   └── ca.example.com-cert.pem
+    │       │   │   │       ├── msp
+    │       │   │   │       │   ├── admincerts
+    │       │   │   │       │   │   └── Admin@example.com-cert.pem
+    │       │   │   │       │   ├── cacerts
+    │       │   │   │       │   │   └── ca.example.com-cert.pem
+    │       │   │   │       │   └── tlscacerts
+    │       │   │   │       │       └── tlsca.example.com-cert.pem
+    │       │   │   │       ├── orderers
+    │       │   │   │       │   └── orderer.example.com
+    │       │   │   │       │       ├── msp
+    │       │   │   │       │       │   ├── admincerts
+    │       │   │   │       │       │   │   └── Admin@example.com-cert.pem
+    │       │   │   │       │       │   ├── cacerts
+    │       │   │   │       │       │   │   └── ca.example.com-cert.pem
+    │       │   │   │       │       │   ├── keystore
+    │       │   │   │       │       │   │   └── 4947ca37ff6aca98aed30b2f50b64b152f22089e51cf0a70ff5ceb76e9872d66_sk
+    │       │   │   │       │       │   ├── signcerts
+    │       │   │   │       │       │   │   └── orderer.example.com-cert.pem
+    │       │   │   │       │       │   └── tlscacerts
+    │       │   │   │       │       │       └── tlsca.example.com-cert.pem
+    │       │   │   │       │       └── tls
+    │       │   │   │       │           ├── ca.crt
+    │       │   │   │       │           ├── server.crt
+    │       │   │   │       │           └── server.key
+    │       │   │   │       ├── tlsca
+    │       │   │   │       │   ├── 7b50b613ab7f8142a9f3c1a7b546c9f042026ffc7439fa37b6c5c0eb91ae0c1d_sk
+    │       │   │   │       │   └── tlsca.example.com-cert.pem
+    │       │   │   │       └── users
+    │       │   │   │           └── Admin@example.com
+    │       │   │   │               ├── msp
+    │       │   │   │               │   ├── admincerts
+    │       │   │   │               │   │   └── Admin@example.com-cert.pem
+    │       │   │   │               │   ├── cacerts
+    │       │   │   │               │   │   └── ca.example.com-cert.pem
+    │       │   │   │               │   ├── keystore
+    │       │   │   │               │   │   └── c6211e0b87d5ac94276dbf92e4cfadf385ee78e1c46cffb9a2e454e090736065_sk
+    │       │   │   │               │   ├── signcerts
+    │       │   │   │               │   │   └── Admin@example.com-cert.pem
+    │       │   │   │               │   └── tlscacerts
+    │       │   │   │               │       └── tlsca.example.com-cert.pem
+    │       │   │   │               └── tls
+    │       │   │   │                   ├── ca.crt
+    │       │   │   │                   ├── server.crt
+    │       │   │   │                   └── server.key
+    │       │   │   └── peerOrganizations
+    │       │   │       └── org1.example.com
+    │       │   │           ├── ca
+    │       │   │           │   ├── 19ab65abbb04807dad12e4c0a9aaa6649e70868e3abd0217a322d89e47e1a6ae_sk
+    │       │   │           │   └── ca.org1.example.com-cert.pem
+    │       │   │           ├── msp
+    │       │   │           │   ├── admincerts
+    │       │   │           │   │   └── Admin@org1.example.com-cert.pem
+    │       │   │           │   ├── cacerts
+    │       │   │           │   │   └── ca.org1.example.com-cert.pem
+    │       │   │           │   └── tlscacerts
+    │       │   │           │       └── tlsca.org1.example.com-cert.pem
+    │       │   │           ├── peers
+    │       │   │           │   └── peer0.org1.example.com
+    │       │   │           │       ├── msp
+    │       │   │           │       │   ├── admincerts
+    │       │   │           │       │   │   └── Admin@org1.example.com-cert.pem
+    │       │   │           │       │   ├── cacerts
+    │       │   │           │       │   │   └── ca.org1.example.com-cert.pem
+    │       │   │           │       │   ├── keystore
+    │       │   │           │       │   │   └── dfb17cf51dc061d585b4850599be0e4b8b7cc8cc363a67c23bc03c6c5393b0e0_sk
+    │       │   │           │       │   ├── signcerts
+    │       │   │           │       │   │   └── peer0.org1.example.com-cert.pem
+    │       │   │           │       │   └── tlscacerts
+    │       │   │           │       │       └── tlsca.org1.example.com-cert.pem
+    │       │   │           │       └── tls
+    │       │   │           │           ├── ca.crt
+    │       │   │           │           ├── server.crt
+    │       │   │           │           └── server.key
+    │       │   │           ├── tlsca
+    │       │   │           │   ├── ed9a007fe080f78d1af5410dbf35cedac9781ce6808f3c3573b748eb0de142ac_sk
+    │       │   │           │   └── tlsca.org1.example.com-cert.pem
+    │       │   │           └── users
+    │       │   │               └── Admin@org1.example.com
+    │       │   │                   ├── msp
+    │       │   │                   │   ├── admincerts
+    │       │   │                   │   │   └── Admin@org1.example.com-cert.pem
+    │       │   │                   │   ├── cacerts
+    │       │   │                   │   │   └── ca.org1.example.com-cert.pem
+    │       │   │                   │   ├── keystore
+    │       │   │                   │   │   └── 114aab0e76bf0c78308f89efc4b8c9423e31568da0c340ca187a9b17aa9a4457_sk
+    │       │   │                   │   ├── signcerts
+    │       │   │                   │   │   └── Admin@org1.example.com-cert.pem
+    │       │   │                   │   └── tlscacerts
+    │       │   │                   │       └── tlsca.org1.example.com-cert.pem
+    │       │   │                   └── tls
+    │       │   │                       ├── ca.crt
+    │       │   │                       ├── server.crt
+    │       │   │                       └── server.key
+    │       │   ├── crypto-config.yaml
+    │       │   ├── docker-compose.yml
+    │       │   └── howtobuild.txt
+    │       ├── createComposerProfile.sh
+    │       ├── downloadFabric.sh
+    │       ├── startFabric.sh
+    │       ├── stopFabric.sh
+    │       └── teardownFabric.sh
+    ├── _loader.sh
+    ├── package.json
+    ├── startFabric.sh
+    ├── stopFabric.sh
+    ├── teardownAllDocker.sh
+    └── teardownFabric.sh
+
+59 directories, 76 files
 
 $ tree ~/.composer*
 /home/dltdojo/.composer-connection-profiles
