@@ -1,6 +1,6 @@
 ## The Rise of Blockchain & DLT
 
-### 安裝Windows開發環境
+### 1. 安裝Windows開發環境
 
 * Visual Studio Code https://code.visualstudio.com/download
 * VirtualBox https://www.virtualbox.org/
@@ -8,7 +8,7 @@
 * putty http://www.putty.org/
 * Google Chrome Browser https://www.google.com.tw/chrome/browser/desktop/index.html
 
-### 登入開發環境
+### 2. 登入開發環境
 
 #### VirtualBox
 
@@ -26,6 +26,10 @@
 * 開啟putty
 * 在IP Address輸入DEVIP
 * 使用者名稱密碼都是dltdojo登入
+
+### 3. Docker環境基本操作
+
+參考 [httpd範例](httpd/)
 
 ### Use docker-compose up to start all the services
 
