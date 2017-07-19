@@ -1,4 +1,4 @@
-### TEST: Creating self-signed ecdsa-with-SHA256 SSL certificate using OpenSSL
+### Build a docker image from hyperledger/fabric-ca
 
 * hyperledger/fabric-baseimage: https://github.com/hyperledger/fabric-baseimage
 * DOCKER_BASE_x86_64=ubuntu:xenial https://github.com/hyperledger/fabric-baseimage/blob/master/Makefile#L23
