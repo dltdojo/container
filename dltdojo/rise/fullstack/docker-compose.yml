@@ -9,10 +9,4 @@ services:
     environment:
       - PMA_HOST=db
     ports:
-      - "8088:80"
-  backend:
-    build: .
-    ports:
-      - "8081:80"
-    volumes:
-     - ./html:/var/www/html
+        - "8088:80"

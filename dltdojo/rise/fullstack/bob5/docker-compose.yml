@@ -10,9 +10,11 @@ services:
       - PMA_HOST=db
     ports:
       - "8088:80"
-  backend:
+  fullstack:
     build: .
+    command: "nodemon server"
     ports:
-      - "8081:80"
+      - "8900:8900"
     volumes:
-     - ./html:/var/www/html
+      - ./server:/usr/src/app/server
+      
