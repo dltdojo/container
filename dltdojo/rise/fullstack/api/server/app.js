@@ -35,7 +35,7 @@ app.get('/api', function (req, res, next) {
       console.log(err);
     }
     var data = rows;
-    res.json({ message: { dat: data } });
+    res.json({ data: data });
   });
 });
 

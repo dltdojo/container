@@ -9,4 +9,12 @@ services:
     environment:
       - PMA_HOST=db
     ports:
-        - "8088:80"
+      - "8088:80"
+  api:
+    build: api
+    command: sh -c 'sleep 10 && nodemon server'
+    ports:
+      - "8900:8900"
+    volumes:
+      - ./api/server:/usr/src/app/server
+      
