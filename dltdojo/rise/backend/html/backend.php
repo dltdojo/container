@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>BACKEND</title>
 <style>
     body {
-        width: 35em;
+        width: 30em;
         margin: 0 auto;
-        font-family: Tahoma, Verdana, Arial, sans-serif;
     }
 </style>
 </head>
 <body>
-<h1>BACKEND</h1>
+<h1>後端(backend.php)</h1>
 <?php
 /*
 url, username, passwd,
@@ -20,7 +20,7 @@ $connection = new PDO('mysql:host=db;dbname=mydb','root','root');
 $statement = $connection->query('select * from mytable');
 
 foreach($statement as $row){
-    echo $row['name']." ".$row['balance']."<br>";
+    echo $row['name']." = ".$row['balance']."<br>";
 }
 ?>
 </body>

@@ -1,7 +1,7 @@
-### curl -v http://google.com/
+### http協定客戶端工具curl
 
 ```
-bash-4.3# curl -v http://google.com
+# curl -v http://google.com
 * Rebuilt URL to: http://google.com/
 *   Trying 216.58.200.46...
 * TCP_NODELAY set
@@ -32,6 +32,9 @@ The document has moved
 ### nginx http服務映像檔測試
 
 ```
+$ cd httpd
+$ pwd
+/home/dltdojo/smb/container/dltdojo/rise/httpd
 $ docker build -t httpd .
 $ docker run -p 8080:80 -d httpd
 b8357f7cffdba22205b19c1d1adc4e7313d628aef6cdb6631e871faf2aa36c57d
@@ -107,14 +110,6 @@ $ docker build -f Dockerfile.index -t httpd.index .
 $ docker run -p 8080:80 -d httpd.index
 a6c270fe8cc542187f5d1c42c3702210167578cfa025017de42daf249c89d518
 $ curl http://192.168.2.106:8080
-<!DOCTYPE html>
-<html lang="zh-hant-TW">
-<head>
-<title>HTTP測試首頁</title>
-</head>
-<body>
-<h1>中文正常</h1>
-</body>
 $ docker stop a6c2
 $ docker ps
 ```
@@ -131,3 +126,15 @@ $ curl http://192.168.2.106:8080
 $ docker stop a283
 $ docker ps
 ```
+
+### 參考連結
+
+* HTTP 超文本傳輸協定 - 維基百科 https://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE
+* HTML - 維基百科 https://zh.wikipedia.org/wiki/HTML
+* curl - Tutorial https://curl.haxx.se/docs/httpscripting.html
+* Evelyn's Note: curl 指令用法 http://evelynnote.blogspot.tw/2011/03/curl.html
+* 網頁伺服器 - 維基百科 https://zh.wikipedia.org/wiki/%E7%B6%B2%E9%A0%81%E4%BC%BA%E6%9C%8D%E5%99%A8
+* nginx - 維基百科 https://zh.wikipedia.org/wiki/Nginx
+* Docker (軟體) - 維基百科 https://zh.wikipedia.org/wiki/Docker_(%E8%BB%9F%E9%AB%94)
+* Use the Docker command line | Docker Documentation  https://docs.docker.com/engine/reference/commandline/cli/
+* 《Docker —— 從入門到實踐­》https://philipzheng.gitbooks.io/docker_practice/content/introduction/
