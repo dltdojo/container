@@ -9,8 +9,8 @@ COPY --from=0 /usr/local/bin/puppeth /usr/local/bin
 RUN apk --update add bash curl jq tree
 WORKDIR /opt/geth
 ADD gethload.js .
-ADD testaccount.sh .
-RUN chmod +x testaccount.sh
+ADD testaccount.sh start.sh testrpc.sh attach.sh ./
+RUN chmod +x *.sh
 ENTRYPOINT []
 # --datadir "/root/.ethereum/"
-CMD ["geth","--dev","--datadir","/root/.ethereum/","--rpc","--rpcapi", "miner,admin,db,personal,eth,net,web3"]
+CMD ["/opt/geth/start.sh"]
