@@ -1,0 +1,18 @@
+version: '2'
+services:
+  btcboot:
+    image: dltdojo/abe
+    command: /testapp.sh
+    ports:
+      - "12750:12750"
+  node1:
+    image: dltdojo/abe
+    command: /start.sh
+    ports:
+      - "12751:12750"
+  node2:
+    image: dltdojo/abe
+    command: /start.sh
+    ports:
+      - "12752:12750"
+
