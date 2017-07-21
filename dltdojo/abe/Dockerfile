@@ -12,7 +12,7 @@ RUN apk --update --no-cache add python py-pip bash && \
 
 WORKDIR /bitcoin-abe
 ADD abe-sqlite.conf ./
-ADD start.sh /
-RUN chmod a+x /start.sh
+ADD start.sh testapp.sh /
+RUN chmod a+x /*.sh
 ADD bitcoin.conf /home/bitcoin/.bitcoin/
-ENTRYPOINT ["/start.sh"]
+CMD ["/start.sh"]
