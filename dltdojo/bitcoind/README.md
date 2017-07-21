@@ -1,13 +1,121 @@
-### dltdojo/bitcoind:1.4.2
+## 比特幣節點
 
-* https://hub.docker.com/r/dltdojo/bitcoind/
+比特幣節點實做：
+
+* https://github.com/bitcoin/bitcoin
+* https://github.com/bcoin-org
+* Bitcoin in Go https://github.com/btcsuite
+* paritytech/parity-bitcoin https://github.com/paritytech/parity-bitcoin
+
+### 利用現有 seegno/bitcoind 映像檔
+
+* seegno/bitcoind - Docker Hub  https://hub.docker.com/r/seegno/bitcoind/
+
+#### 啟動節點連接比特幣網路，觀察height，以及一開始預先生成的金鑰。
 
 ```
-$ docker build -t dltdojo/bitcoind:1.4.2 .
-$ docker run -d dltdojo/bitcoind:1.4.2
-39f85a358e0c9f3ab1ba495c7ccc642da373607cff66067c4753792751a7283e
-$ docker exec -u bitcoin -it 39f8 sh
+$ pwd
+/home/dltdojo/smb/container/dltdojo/bitcoind
 
+$ docker run -it --rm seegno/bitcoind:0.14.2-alpine -printtoconsole
+
+2017-07-21 07:58:10 keypool added key 97, size=97
+2017-07-21 07:58:10 keypool added key 98, size=98
+2017-07-21 07:58:10 keypool added key 99, size=99
+2017-07-21 07:58:10 keypool added key 100, size=100
+2017-07-21 07:58:10 keypool added key 101, size=101
+2017-07-21 07:58:10 keypool reserve 1
+2017-07-21 07:58:10 keypool keep 1
+
+2017-07-21 07:53:18 UpdateTip: new best=0000000035981d26f072cea02a0cb67897b896229b1436e0009cb9c4c20a4ee9 height=271 version=0x00000001 log2_work=40.087485 tx=279 date='2009-01-13 01:25:00' progress=0.000001 cache=0.1MiB(276tx)
+2017-07-21 07:53:18 UpdateTip: new best=00000000d4e581b02a90ab3f2f45723aea64f341908a767c33968219b9900ef1 height=272 version=0x00000001 log2_work=40.092779 tx=280 date='2009-01-13 01:37:21' progress=0.000001 cache=0.1MiB(277tx)
+^C2017-07-21 07:53:18 tor: Thread interrupt
+2017-07-21 07:53:18 torcontrol thread exit
+
+Ctrl+c
+```
+
+#### 啟動節點連接比特幣測試網路Testnet，觀察height，注意測試鏈時間。
+
+```
+$ docker run -it --rm seegno/bitcoind:0.14.2-alpine -testnet=1 -printtoconsole
+
+2017-07-21 07:56:32 UpdateTip: new best=000000002fbb355416d3cfa66b26cf1a26f33a0539d9583a3834cca6e3c0a552 height=190 version=0x00000001 log2_work=39.577451 tx=191 date='2011-02-03 04:42:42' progress=0.000012 cache=0.0MiB(190tx)
+2017-07-21 07:56:32 UpdateTip: new best=00000000ebecc48af6cca0b45ee6669ca576f6bce61c84d1ca3932062b74d62e height=191 version=0x00000001 log2_work=39.584985 tx=192 date='2011-02-03 04:43:40' progress=0.000012 cache=0.0MiB(191tx)
+2017-07-21 07:56:32 UpdateTip: new best=000000003eacad27508770feb3a380b77e84a0b3377966c30828b38b633f4a4d height=192 version=0x00000001 log2_work=39.592479 tx=193 date='2011-02-03 04:44:23' progress=0.000013 cache=0.0MiB(192tx)
+2017-07-21 07:56:32 tor: Thread interrupt
+2017-07-21 07:56:32 torcontrol thread exit
+
+Ctrl+c
+```
+
+#### 啟動節點連接比特幣測試網路Regtest，注意不會生成新塊。
+
+```
+$ docker run -it --rm seegno/bitcoind:0.14.2-alpine -regtest=1 -printtoconsole
+
+2017-07-21 08:03:10 init message: Starting network threads...
+2017-07-21 08:03:10 init message: Done loading
+2017-07-21 08:03:10 msghand thread start
+2017-07-21 08:03:10 opencon thread start
+2017-07-21 08:03:10 addcon thread start
+2017-07-21 08:03:10 dnsseed thread start
+2017-07-21 08:03:10 Loading addresses from DNS seeds (could take a while)
+2017-07-21 08:03:10 0 addresses found from DNS seeds
+2017-07-21 08:03:10 dnsseed thread exit
+2017-07-21 08:03:10 net thread start
+
+Ctrl+c
+```
+
+#### 啟動比特幣節點連接主網路下載區塊存在本機
+
+You can also mount a directory it in a volume under /home/bitcoin/.bitcoin in case you want to access it on the host:
+```
+$ mkdir data
+$ docker run -v ${PWD}/data:/home/bitcoin/.bitcoin -it --rm seegno/bitcoind:0.14.2-alpine -printtoconsole
+
+Ctrl+c
+
+$ sudo tree -h data
+data
+├── [  37]  banlist.dat
+├── [4.0K]  blocks
+│   ├── [ 16M]  blk00000.dat
+│   ├── [4.0K]  index
+│   │   ├── [2.8M]  000003.log
+│   │   ├── [  16]  CURRENT
+│   │   ├── [   0]  LOCK
+│   │   ├── [  57]  LOG
+│   │   └── [  50]  MANIFEST-000002
+│   └── [1.0M]  rev00000.dat
+├── [4.0K]  chainstate
+│   ├── [ 13K]  000003.log
+│   ├── [  16]  CURRENT
+│   ├── [   0]  LOCK
+│   ├── [  57]  LOG
+│   └── [  50]  MANIFEST-000002
+├── [   0]  db.log
+├── [   0]  debug.log
+├── [ 21K]  fee_estimates.dat
+├── [  17]  mempool.dat
+├── [125K]  peers.dat
+└── [ 92K]  wallet.dat
+
+3 directories, 19 files
+
+```
+
+#### 製作Regtest映像檔，啟動並進入容器產生區塊並轉帳查詢交易值。
+
+```
+$ docker-compose build
+$ docker-compose up -d
+$ docker ps
+CONTAINER ID        IMAGE                    COMMAND                  CREATED             STATUS              PORTS                                       NAMES
+e7472883bd34        dltdojo/bitcoind:1.4.2   "/entrypoint.sh bi..."   55 seconds ago      Up 8 seconds        8332-8333/tcp, 18332-18333/tcp, 18444/tcp   bitcoind_bitcoind_1
+
+$ docker-compose exec --user bitcoin bitcoind sh
 / $ bitcoin-cli getinfo
 {
   "version": 140200,
@@ -20,13 +128,15 @@ $ docker exec -u bitcoin -it 39f8 sh
   "proxy": "",
   "difficulty": 4.656542373906925e-10,
   "testnet": false,
-  "keypoololdest": 1498473356,
+  "keypoololdest": 1500625349,
   "keypoolsize": 100,
   "paytxfee": 0.00000000,
   "relayfee": 0.00001000,
   "errors": ""
 }
+
 / $ bitcoin-cli generate 101
+
 / $ bitcoin-cli getinfo
 {
   "version": 140200,
@@ -39,14 +149,15 @@ $ docker exec -u bitcoin -it 39f8 sh
   "proxy": "",
   "difficulty": 4.656542373906925e-10,
   "testnet": false,
-  "keypoololdest": 1498473356,
+  "keypoololdest": 1500625349,
   "keypoolsize": 100,
   "paytxfee": 0.00000000,
   "relayfee": 0.00001000,
   "errors": ""
 }
+
 / $ bitcoin-cli sendtoaddress mvbnrCX3bg1cDRUu8pkecrvP6vQkSLDSou 10.00
-2ddb487400db7b94a7d8728e64a3ebd0205c3994ffc74f651d58ee1d5c2e93e3
+6b7cf6dcf533a48be35a92ee43d3a20dba67dc08ba0d076ea95ed8f7de241dbf
 / $ bitcoin-cli getinfo
 {
   "version": 140200,
@@ -59,31 +170,75 @@ $ docker exec -u bitcoin -it 39f8 sh
   "proxy": "",
   "difficulty": 4.656542373906925e-10,
   "testnet": false,
-  "keypoololdest": 1498473356,
+  "keypoololdest": 1500625349,
   "keypoolsize": 100,
   "paytxfee": 0.00000000,
   "relayfee": 0.00001000,
   "errors": ""
 }
-/ $ bitcoin-cli generate 1
-[
-  "55fb99c19e60bf192b8f1d0a23bf00e7b35a6c7443d7fe554bd4fe1dff48dfec"
-]
 
-/ $ bitcoin-cli gettransaction 2ddb487400db7b94a7d8728e64a3ebd0205c3994ffc74f651
-d58ee1d5c2e93e3
+/ $ TXID=6b7cf6dcf533a48be35a92ee43d3a20dba67dc08ba0d076ea95ed8f7de241dbf
+/ $ bitcoin-cli getrawtransaction $TXID 1
+{
+  "hex": "02000000016bed0d9c75799e3912868f282973ec557ce3c5009a6b2b4cc3c21479e975b7190000000048473044022044a9268e26ee9fcef25c2735a4c8a965d8605f02f0d2e6adf7e10d198230a5c50220079e35b03d373e49b6487ffc68fa3dbd1b87fdaf073260a0bf965b687ae2c53201feffffff0200ca9a3b000000001976a914a57414e5ffae9ef5074bacbe10a320bb2614e1f388ac00196bee000000001976a9142b9f2b59c617917dc178c7a2acf19db0f4d214fe88ac65000000",
+  "txid": "6b7cf6dcf533a48be35a92ee43d3a20dba67dc08ba0d076ea95ed8f7de241dbf",
+  "hash": "6b7cf6dcf533a48be35a92ee43d3a20dba67dc08ba0d076ea95ed8f7de241dbf",
+  "size": 191,
+  "vsize": 191,
+  "version": 2,
+  "locktime": 101,
+  "vin": [
+    {
+      "txid": "19b775e97914c2c34c2b6b9a00c5e37c55ec7329288f8612399e79759c0ded6b",
+      "vout": 0,
+      "scriptSig": {
+        "asm": "3044022044a9268e26ee9fcef25c2735a4c8a965d8605f02f0d2e6adf7e10d198230a5c50220079e35b03d373e49b6487ffc68fa3dbd1b87fdaf073260a0bf965b687ae2c532[ALL]",
+        "hex": "473044022044a9268e26ee9fcef25c2735a4c8a965d8605f02f0d2e6adf7e10d198230a5c50220079e35b03d373e49b6487ffc68fa3dbd1b87fdaf073260a0bf965b687ae2c53201"
+      },
+      "sequence": 4294967294
+    }
+  ],
+  "vout": [
+    {
+      "value": 10.00000000,
+      "n": 0,
+      "scriptPubKey": {
+        "asm": "OP_DUP OP_HASH160 a57414e5ffae9ef5074bacbe10a320bb2614e1f3 OP_EQUALVERIFY OP_CHECKSIG",
+        "hex": "76a914a57414e5ffae9ef5074bacbe10a320bb2614e1f388ac",
+        "reqSigs": 1,
+        "type": "pubkeyhash",
+        "addresses": [
+          "mvbnrCX3bg1cDRUu8pkecrvP6vQkSLDSou"
+        ]
+      }
+    },
+    {
+      "value": 39.99996160,
+      "n": 1,
+      "scriptPubKey": {
+        "asm": "OP_DUP OP_HASH160 2b9f2b59c617917dc178c7a2acf19db0f4d214fe OP_EQUALVERIFY OP_CHECKSIG",
+        "hex": "76a9142b9f2b59c617917dc178c7a2acf19db0f4d214fe88ac",
+        "reqSigs": 1,
+        "type": "pubkeyhash",
+        "addresses": [
+          "mjVc2aixtBQFfHbT7TwxT1KG5FLz3pef2t"
+        ]
+      }
+    }
+  ]
+}
+
+/ $ bitcoin-cli gettransaction $TXID
 {
   "amount": -10.00000000,
   "fee": -0.00003840,
-  "confirmations": 1,
-  "blockhash": "55fb99c19e60bf192b8f1d0a23bf00e7b35a6c7443d7fe554bd4fe1dff48dfec",
-  "blockindex": 1,
-  "blocktime": 1498474968,
-  "txid": "2ddb487400db7b94a7d8728e64a3ebd0205c3994ffc74f651d58ee1d5c2e93e3",
+  "confirmations": 0,
+  "trusted": true,
+  "txid": "6b7cf6dcf533a48be35a92ee43d3a20dba67dc08ba0d076ea95ed8f7de241dbf",
   "walletconflicts": [
   ],
-  "time": 1498474936,
-  "timereceived": 1498474936,
+  "time": 1500625711,
+  "timereceived": 1500625711,
   "bip125-replaceable": "no",
   "details": [
     {
@@ -91,45 +246,33 @@ d58ee1d5c2e93e3
       "address": "mvbnrCX3bg1cDRUu8pkecrvP6vQkSLDSou",
       "category": "send",
       "amount": -10.00000000,
-      "vout": 1,
+      "vout": 0,
       "fee": -0.00003840,
       "abandoned": false
     }
   ],
-  "hex": "0200000001b26b2231462b1fec3408b6cdd9a885adfe0d2c17e2bc3a32eb0c50ead7a1ea9200000000494830450221008220ee36688be67f4024d4f10cfaaa8b9c5a92b20e39edb3649ddddec484912a02203e8094174677c17158fae3581d412d10942d0577db173ada24c355be67cea6bf01feffffff0200196bee000000001976a914cd7b1303a465bba8a5775e976ccf591bfdcf15e788ac00ca9a3b000000001976a914a57414e5ffae9ef5074bacbe10a320bb2614e1f388ac65000000"
+  "hex": "02000000016bed0d9c75799e3912868f282973ec557ce3c5009a6b2b4cc3c21479e975b7190000000048473044022044a9268e26ee9fcef25c2735a4c8a965d8605f02f0d2e6adf7e10d198230a5c50220079e35b03d373e49b6487ffc68fa3dbd1b87fdaf073260a0bf965b687ae2c53201feffffff0200ca9a3b000000001976a914a57414e5ffae9ef5074bacbe10a320bb2614e1f388ac00196bee000000001976a9142b9f2b59c617917dc178c7a2acf19db0f4d214fe88ac65000000"
 }
+
 / $ bitcoin-cli getnewaddress
 mzvubqbwXXWEZVAmZ7EVKrYJu8D1azm8py
 
 / $ exit
 
-$ docker stop 39f8
+$ docker-compose stop
+Stopping bitcoind_bitcoind_1 ... done
 ```
 
-### docker toolbox on Windows
+### 利用現有 uphold/litecoind 映像檔連接Litecoin網路
 
-Docker Quickstart Terminal
+* uphold/litecoind - Docker Hub https://hub.docker.com/r/uphold/litecoind/
 
 ```
-docker is configured to use the default machine with IP 192.168.99.100
-For help getting started, check out the docs at https://docs.docker.com
- 
-user@W10 MINGW64 ~
-$ docker -v
-Docker version 17.05.0-ce, build 89658be
+$ docker run --rm -it uphold/litecoind  -printtoconsole -rpcpassword=bar -rpcuser=foo
 
-user@W10 MINGW64 ~
-$ docker-compose -v
-docker-compose version 1.13.0, build 1719ceb8
+UpdateTip: new best=495753d8f73a52fb0fe6d88b89f12ed3701939676f61352f06708b666882dfdc  height=47  log2_work=25.584985  tx=48  date=2011-10-13 03:03:10 progress=0.000002  cache=47
+UpdateTip: new best=638f1be6872614e416ddeeac084ad425974f66a0372f61d125fe0baa653d8caa  height=48  log2_work=25.614732  tx=49  date=2011-10-13 03:03:15 progress=0.000002  cache=48
 
-user@W10 MINGW64 ~
-$ docker-machine ls
-NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
-default   *        virtualbox   Running   tcp://192.168.99.100:2376           v17.05.0-ce
-
-$ docker-machine stop
+Ctrl+c
 ```
 
-### REFERENCES
-
-* seegno/bitcoind - Docker Hub  https://hub.docker.com/r/seegno/bitcoind/
