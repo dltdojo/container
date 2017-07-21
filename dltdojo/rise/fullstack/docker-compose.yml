@@ -1,20 +1,7 @@
 version: '2'
 services:
-  db:
-    image: mariadb:10.1
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      - PMA_HOST=db
-    ports:
-      - "8088:80"
-  api:
-    build: api
-    command: sh -c 'sleep 10 && nodemon server'
+  fullstack:
+    build: .
     ports:
       - "8900:8900"
-    volumes:
-      - ./api/server:/usr/src/app/server
-      
+
