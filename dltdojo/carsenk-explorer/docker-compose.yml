@@ -1,0 +1,13 @@
+version: '2'
+services:
+  geth:
+    image: dltdojo/geth:1.6.7
+    command: ./testrpc.sh
+    ports:
+        - "8545:8545"
+  carexp:
+    build: .
+    image: dltdojo/carexp
+    ports:
+        - "8000:8000"
+    command: '/start.sh 192.168.2.106'

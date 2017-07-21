@@ -1,0 +1,7 @@
+version: '2'
+services:
+  geth:
+    image: dltdojo/geth:1.6.7
+    command: ./testrpc.sh
+    ports:
+        - "8545:8545"
