@@ -1,10 +1,10 @@
-## Fabric CA Test
+## Hyperledger Fabric CA
 
 * https://github.com/hyperledger/fabric-ca/blob/master/docs/source/users-guide.rst
 * https://jamielinux.com/docs/openssl-certificate-authority/create-the-root-pair.html
 * https://gist.github.com/Soarez/9688998
 
-### 準備docker volume
+### 準備 docker volume 供容器放置檔案
 
 建立新的docker volume測試，如要保留舊測試內容則不要刪除。
 
@@ -16,6 +16,11 @@ $ docker volume create ddjfab-ca
 ```
 
 ### 新增ecdsa-with-SHA256的CA憑證
+
+* openssl預設的CA簽署Certificate Key Usage不用，但是Fabric CA需要讀取這個欄位，直接編輯openssl.cnf或是用sed去掉前置#讓其生效。
+* 目前Fabric CA支援ECDSA的ASN1 OID為prime256v1/secp384r1/secp521r1。
+* openssl生成金鑰格式需轉換為PKCS#8格式。
+* 完成後將金鑰與憑證置入CA設定路徑。
 
 ```
 $ docker-compose up -d ddjnode
@@ -33,7 +38,7 @@ bash-4.3# tree /ddj/
 bash-4.3# exit
 ```
 
-log
+實際操作內容
 
 ```
 bash-4.3# mkdir /ddj/myca && cd /ddj/myca
@@ -136,7 +141,7 @@ bash-4.3# tree /ddj/
 3 directories, 5 files
 
 ```
-### 啟動CA服務
+### 使用客製CA憑證啟動CA服務
 
 ```
 $ docker-compose up -d ca
@@ -171,7 +176,7 @@ $ docker-compose exec ddjnode tree /ddj/
 
 ```
 
-### 確認註冊員受理權限
+### 確認CA預設admin註冊員受理權限
 
 * identity name : admin
 * identity pass : adminPass
@@ -327,7 +332,7 @@ $ docker-compose exec admin fabric-ca-client register --id.name alice --id.type 
 Password: OURFZMWKmqMl
 ```
 
-### 使用者alice取得密碼申請ECert
+### 啟動使用者alice節點，取得密碼申請ECert
 
 ```
 $ docker-compose up -d alice
@@ -463,7 +468,7 @@ $ docker-compose exec admin fabric-ca-client register --id.name peer1 --id.type 
 Password: peer1pw
 ```
 
-### 節點peer1申請ECert
+### 啟動節點peer1申請ECert
 
 ```
 $ docker-compose up -d peer1
@@ -565,7 +570,7 @@ xnpBvZ7iuD8Nciga
 -----END CERTIFICATE-----
 ```
 
-### cleanup
+### 停止容器並清除共用volume
 ```
 $ docker-compose stop && docker-compose rm -f && docker volume rm ddjfab-ca
 ```

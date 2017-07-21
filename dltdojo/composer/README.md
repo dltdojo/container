@@ -1,18 +1,54 @@
 ## Hyperledger Composer(HC)
-Introduction | Hyperledger Composer https://hyperledger.github.io/composer/introduction/introduction.html
 
-### Install and run Hyperledger Composer (HC) Playground locally
-
+* Introduction | Hyperledger Composer https://hyperledger.github.io/composer/introduction/introduction.html
 * ubuntu 16.04
 * https://hyperledger.github.io/composer/installing/using-playground-locally.html
-* Playground (Example): http://192.168.2.106:8080/ 
+* Playground (Example): http://DEVIP:8080/ 
+
+### 安裝 Hyperledger Composer Playground(Hyperledger Fabric v1.0)
+
+* 當下目錄composer-data為已安裝結果，如要全新安裝請另外建立目錄。
+* 安裝完畢會直接啟動，可檢視所有容器服務。
 
 ```
+$ cd /home/dltdojo/smb && mkdir composer && cd composer
 $ curl -sSL https://hyperledger.github.io/composer/install-hlfv1.sh | bash
 
 --------------------------------------------------------------------------------------
 Hyperledger Fabric and Hyperledger Composer installed, and Composer Playground launched
 Please use 'composer.sh' to re-start, and 'composer.sh stop' to shutdown all the Fabric and Composer docker images
+
+$ docker ps
+CONTAINER ID        IMAGE                                     COMMAND                  CREATED              STATUS              PORTS                                            NAMES
+8b8d5fbb4f52        hyperledger/composer-playground           "pm2-docker compos..."   35 seconds ago       Up 35 seconds       0.0.0.0:8080->8080/tcp                           composer
+33d040e972d1        hyperledger/fabric-peer:x86_64-1.0.0      "peer node start -..."   About a minute ago   Up About a minute   0.0.0.0:7051->7051/tcp, 0.0.0.0:7053->7053/tcp   peer0.org1.example.com
+b77968578f4c        hyperledger/fabric-orderer:x86_64-1.0.0   "orderer"                About a minute ago   Up About a minute   0.0.0.0:7050->7050/tcp                           orderer.example.com
+a784ec462055        hyperledger/fabric-couchdb:x86_64-1.0.0   "tini -- /docker-e..."   About a minute ago   Up About a minute   4369/tcp, 9100/tcp, 0.0.0.0:5984->5984/tcp       couchdb
+86e89370e4d8        hyperledger/fabric-ca:x86_64-1.0.0        "sh -c 'fabric-ca-..."   About a minute ago   Up About a minute   0.0.0.0:7054->7054/tcp                           ca.org1.example.com
+
+$ docker exec 86e8 ls /etc/hyperledger/fabric-ca-server
+ca-cert.pem
+ca-key.pem
+fabric-ca-server-config.yaml
+fabric-ca-server.db
+msp
+
+$ docker exec 86e8 cat /etc/hyperledger/fabric-ca-server/ca-cert.pem
+-----BEGIN CERTIFICATE-----
+MIICYjCCAgmgAwIBAgIUB3CTDOU47sUC5K4kn/Caqnh114YwCgYIKoZIzj0EAwIw
+fzELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNh
+biBGcmFuY2lzY28xHzAdBgNVBAoTFkludGVybmV0IFdpZGdldHMsIEluYy4xDDAK
+BgNVBAsTA1dXVzEUMBIGA1UEAxMLZXhhbXBsZS5jb20wHhcNMTYxMDEyMTkzMTAw
+WhcNMjExMDExMTkzMTAwWjB/MQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZv
+cm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNjbzEfMB0GA1UEChMWSW50ZXJuZXQg
+V2lkZ2V0cywgSW5jLjEMMAoGA1UECxMDV1dXMRQwEgYDVQQDEwtleGFtcGxlLmNv
+bTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABKIH5b2JaSmqiQXHyqC+cmknICcF
+i5AddVjsQizDV6uZ4v6s+PWiJyzfA/rTtMvYAPq/yeEHpBUB1j053mxnpMujYzBh
+MA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBQXZ0I9
+qp6CP8TFHZ9bw5nRtZxIEDAfBgNVHSMEGDAWgBQXZ0I9qp6CP8TFHZ9bw5nRtZxI
+EDAKBggqhkjOPQQDAgNHADBEAiAHp5Rbp9Em1G/UmKn8WsCbqDfWecVbZPQj3RK4
+oG5kQQIgQAe4OOKYhJdh3f7URaKfGTf492/nmRmtK+ySKjpHSrU=
+-----END CERTIFICATE-----
 
 $ ./composer.sh stop
 Stopping all Docker containers
@@ -32,7 +68,7 @@ b0f65118342a
 8b0917f4368d
 ```
 
-### Start playground
+### 啟動 Playground 細節
 
 ```
 $ ./composer.sh
@@ -199,156 +235,147 @@ Could not detect web browser to use - please launch Composer Playground URL usin
 --------------------------------------------------------------------------------------
 Hyperledger Fabric and Hyperledger Composer installed, and Composer Playground launched
 Please use 'composer.sh' to re-start, and 'composer.sh stop' to shutdown all the Fabric and Composer docker images
-
-
-$ docker ps
-CONTAINER ID        IMAGE                                              COMMAND                  CREATED             STATUS              PORTS                                            NAMES
-4ab8f4068c86        dev-peer0.org1.example.com-org-acme-biznet-0.9.2   "chaincode -peer.a..."   33 seconds ago      Up 33 seconds                                                        dev-peer0.org1.example.com-org-acme-biznet-0.9.2
-3550ffad25c0        hyperledger/composer-playground                    "pm2-docker compos..."   5 minutes ago       Up 5 minutes        0.0.0.0:8080->8080/tcp                           composer
-8f86b0061cf2        hyperledger/fabric-peer:x86_64-1.0.0               "peer node start -..."   7 minutes ago       Up 7 minutes        0.0.0.0:7051->7051/tcp, 0.0.0.0:7053->7053/tcp   peer0.org1.example.com
-6bf7213d19be        hyperledger/fabric-orderer:x86_64-1.0.0            "orderer"                7 minutes ago       Up 7 minutes        0.0.0.0:7050->7050/tcp                           orderer.example.com
-b0f65118342a        hyperledger/fabric-couchdb:x86_64-1.0.0            "tini -- /docker-e..."   7 minutes ago       Up 7 minutes        4369/tcp, 9100/tcp, 0.0.0.0:5984->5984/tcp       couchdb
-8b0917f4368d        hyperledger/fabric-ca:x86_64-1.0.0                 "sh -c 'fabric-ca-..."   7 minutes ago       Up 7 minutes        0.0.0.0:7054->7054/tcp                           ca.org1.example.com
 ```
-### composer files
+
+### install-hlfv1.sh 安裝檔案
 ```
 $ tree composer-data/
 composer-data/
-├── docker-compose-playground.yml
-└── fabric-dev-servers
-    ├── createComposerProfile.sh
-    ├── downloadFabric.sh
-    ├── fabric-scripts
-    │   ├── hlfv0.6
-    │   │   ├── createComposerProfile.sh
-    │   │   ├── docker-compose.yml
-    │   │   ├── downloadFabric.sh
-    │   │   ├── README.md
-    │   │   ├── startFabric.sh
-    │   │   ├── stopFabric.sh
-    │   │   └── teardownFabric.sh
-    │   └── hlfv1
-    │       ├── composer
-    │       │   ├── composer-channel.tx
-    │       │   ├── composer-genesis.block
-    │       │   ├── configtx.yaml
-    │       │   ├── creds
-    │       │   │   ├── 114aab0e76bf0c78308f89efc4b8c9423e31568da0c340ca187a9b17aa9a4457-priv
-    │       │   │   ├── 114aab0e76bf0c78308f89efc4b8c9423e31568da0c340ca187a9b17aa9a4457-pub
-    │       │   │   └── PeerAdmin
-    │       │   ├── crypto-config
-    │       │   │   ├── ordererOrganizations
-    │       │   │   │   └── example.com
-    │       │   │   │       ├── ca
-    │       │   │   │       │   ├── 5a6c4ce688103f8220147c6f8257eefbb5a1a8a80220c720d8152a2158021893_sk
-    │       │   │   │       │   └── ca.example.com-cert.pem
-    │       │   │   │       ├── msp
-    │       │   │   │       │   ├── admincerts
-    │       │   │   │       │   │   └── Admin@example.com-cert.pem
-    │       │   │   │       │   ├── cacerts
-    │       │   │   │       │   │   └── ca.example.com-cert.pem
-    │       │   │   │       │   └── tlscacerts
-    │       │   │   │       │       └── tlsca.example.com-cert.pem
-    │       │   │   │       ├── orderers
-    │       │   │   │       │   └── orderer.example.com
-    │       │   │   │       │       ├── msp
-    │       │   │   │       │       │   ├── admincerts
-    │       │   │   │       │       │   │   └── Admin@example.com-cert.pem
-    │       │   │   │       │       │   ├── cacerts
-    │       │   │   │       │       │   │   └── ca.example.com-cert.pem
-    │       │   │   │       │       │   ├── keystore
-    │       │   │   │       │       │   │   └── 4947ca37ff6aca98aed30b2f50b64b152f22089e51cf0a70ff5ceb76e9872d66_sk
-    │       │   │   │       │       │   ├── signcerts
-    │       │   │   │       │       │   │   └── orderer.example.com-cert.pem
-    │       │   │   │       │       │   └── tlscacerts
-    │       │   │   │       │       │       └── tlsca.example.com-cert.pem
-    │       │   │   │       │       └── tls
-    │       │   │   │       │           ├── ca.crt
-    │       │   │   │       │           ├── server.crt
-    │       │   │   │       │           └── server.key
-    │       │   │   │       ├── tlsca
-    │       │   │   │       │   ├── 7b50b613ab7f8142a9f3c1a7b546c9f042026ffc7439fa37b6c5c0eb91ae0c1d_sk
-    │       │   │   │       │   └── tlsca.example.com-cert.pem
-    │       │   │   │       └── users
-    │       │   │   │           └── Admin@example.com
-    │       │   │   │               ├── msp
-    │       │   │   │               │   ├── admincerts
-    │       │   │   │               │   │   └── Admin@example.com-cert.pem
-    │       │   │   │               │   ├── cacerts
-    │       │   │   │               │   │   └── ca.example.com-cert.pem
-    │       │   │   │               │   ├── keystore
-    │       │   │   │               │   │   └── c6211e0b87d5ac94276dbf92e4cfadf385ee78e1c46cffb9a2e454e090736065_sk
-    │       │   │   │               │   ├── signcerts
-    │       │   │   │               │   │   └── Admin@example.com-cert.pem
-    │       │   │   │               │   └── tlscacerts
-    │       │   │   │               │       └── tlsca.example.com-cert.pem
-    │       │   │   │               └── tls
-    │       │   │   │                   ├── ca.crt
-    │       │   │   │                   ├── server.crt
-    │       │   │   │                   └── server.key
-    │       │   │   └── peerOrganizations
-    │       │   │       └── org1.example.com
-    │       │   │           ├── ca
-    │       │   │           │   ├── 19ab65abbb04807dad12e4c0a9aaa6649e70868e3abd0217a322d89e47e1a6ae_sk
-    │       │   │           │   └── ca.org1.example.com-cert.pem
-    │       │   │           ├── msp
-    │       │   │           │   ├── admincerts
-    │       │   │           │   │   └── Admin@org1.example.com-cert.pem
-    │       │   │           │   ├── cacerts
-    │       │   │           │   │   └── ca.org1.example.com-cert.pem
-    │       │   │           │   └── tlscacerts
-    │       │   │           │       └── tlsca.org1.example.com-cert.pem
-    │       │   │           ├── peers
-    │       │   │           │   └── peer0.org1.example.com
-    │       │   │           │       ├── msp
-    │       │   │           │       │   ├── admincerts
-    │       │   │           │       │   │   └── Admin@org1.example.com-cert.pem
-    │       │   │           │       │   ├── cacerts
-    │       │   │           │       │   │   └── ca.org1.example.com-cert.pem
-    │       │   │           │       │   ├── keystore
-    │       │   │           │       │   │   └── dfb17cf51dc061d585b4850599be0e4b8b7cc8cc363a67c23bc03c6c5393b0e0_sk
-    │       │   │           │       │   ├── signcerts
-    │       │   │           │       │   │   └── peer0.org1.example.com-cert.pem
-    │       │   │           │       │   └── tlscacerts
-    │       │   │           │       │       └── tlsca.org1.example.com-cert.pem
-    │       │   │           │       └── tls
-    │       │   │           │           ├── ca.crt
-    │       │   │           │           ├── server.crt
-    │       │   │           │           └── server.key
-    │       │   │           ├── tlsca
-    │       │   │           │   ├── ed9a007fe080f78d1af5410dbf35cedac9781ce6808f3c3573b748eb0de142ac_sk
-    │       │   │           │   └── tlsca.org1.example.com-cert.pem
-    │       │   │           └── users
-    │       │   │               └── Admin@org1.example.com
-    │       │   │                   ├── msp
-    │       │   │                   │   ├── admincerts
-    │       │   │                   │   │   └── Admin@org1.example.com-cert.pem
-    │       │   │                   │   ├── cacerts
-    │       │   │                   │   │   └── ca.org1.example.com-cert.pem
-    │       │   │                   │   ├── keystore
-    │       │   │                   │   │   └── 114aab0e76bf0c78308f89efc4b8c9423e31568da0c340ca187a9b17aa9a4457_sk
-    │       │   │                   │   ├── signcerts
-    │       │   │                   │   │   └── Admin@org1.example.com-cert.pem
-    │       │   │                   │   └── tlscacerts
-    │       │   │                   │       └── tlsca.org1.example.com-cert.pem
-    │       │   │                   └── tls
-    │       │   │                       ├── ca.crt
-    │       │   │                       ├── server.crt
-    │       │   │                       └── server.key
-    │       │   ├── crypto-config.yaml
-    │       │   ├── docker-compose.yml
-    │       │   └── howtobuild.txt
-    │       ├── createComposerProfile.sh
-    │       ├── downloadFabric.sh
-    │       ├── startFabric.sh
-    │       ├── stopFabric.sh
-    │       └── teardownFabric.sh
-    ├── _loader.sh
-    ├── package.json
-    ├── startFabric.sh
-    ├── stopFabric.sh
-    ├── teardownAllDocker.sh
-    └── teardownFabric.sh
+├── [1.3K]  docker-compose-playground.yml
+└── [4.0K]  fabric-dev-servers
+    ├── [  82]  createComposerProfile.sh
+    ├── [  82]  downloadFabric.sh
+    ├── [4.0K]  fabric-scripts
+    │   ├── [4.0K]  hlfv0.6
+    │   │   ├── [ 711]  createComposerProfile.sh
+    │   │   ├── [ 821]  docker-compose.yml
+    │   │   ├── [ 455]  downloadFabric.sh
+    │   │   ├── [  42]  README.md
+    │   │   ├── [ 486]  startFabric.sh
+    │   │   ├── [ 211]  stopFabric.sh
+    │   │   └── [ 495]  teardownFabric.sh
+    │   └── [4.0K]  hlfv1
+    │       ├── [4.0K]  composer
+    │       │   ├── [ 358]  composer-channel.tx
+    │       │   ├── [6.2K]  composer-genesis.block
+    │       │   ├── [4.4K]  configtx.yaml
+    │       │   ├── [4.0K]  creds
+    │       │   │   ├── [ 246]  114aab0e76bf0c78308f89efc4b8c9423e31568da0c340ca187a9b17aa9a4457-priv
+    │       │   │   ├── [ 182]  114aab0e76bf0c78308f89efc4b8c9423e31568da0c340ca187a9b17aa9a4457-pub
+    │       │   │   └── [1.0K]  PeerAdmin
+    │       │   ├── [4.0K]  crypto-config
+    │       │   │   ├── [4.0K]  ordererOrganizations
+    │       │   │   │   └── [4.0K]  example.com
+    │       │   │   │       ├── [4.0K]  ca
+    │       │   │   │       │   ├── [ 241]  5a6c4ce688103f8220147c6f8257eefbb5a1a8a80220c720d8152a2158021893_sk
+    │       │   │   │       │   └── [ 818]  ca.example.com-cert.pem
+    │       │   │   │       ├── [4.0K]  msp
+    │       │   │   │       │   ├── [4.0K]  admincerts
+    │       │   │   │       │   │   └── [ 769]  Admin@example.com-cert.pem
+    │       │   │   │       │   ├── [4.0K]  cacerts
+    │       │   │   │       │   │   └── [ 818]  ca.example.com-cert.pem
+    │       │   │   │       │   └── [4.0K]  tlscacerts
+    │       │   │   │       │       └── [ 826]  tlsca.example.com-cert.pem
+    │       │   │   │       ├── [4.0K]  orderers
+    │       │   │   │       │   └── [4.0K]  orderer.example.com
+    │       │   │   │       │       ├── [4.0K]  msp
+    │       │   │   │       │       │   ├── [4.0K]  admincerts
+    │       │   │   │       │       │   │   └── [ 769]  Admin@example.com-cert.pem
+    │       │   │   │       │       │   ├── [4.0K]  cacerts
+    │       │   │   │       │       │   │   └── [ 818]  ca.example.com-cert.pem
+    │       │   │   │       │       │   ├── [4.0K]  keystore
+    │       │   │   │       │       │   │   └── [ 241]  4947ca37ff6aca98aed30b2f50b64b152f22089e51cf0a70ff5ceb76e9872d66_sk
+    │       │   │   │       │       │   ├── [4.0K]  signcerts
+    │       │   │   │       │       │   │   └── [ 769]  orderer.example.com-cert.pem
+    │       │   │   │       │       │   └── [4.0K]  tlscacerts
+    │       │   │   │       │       │       └── [ 826]  tlsca.example.com-cert.pem
+    │       │   │   │       │       └── [4.0K]  tls
+    │       │   │   │       │           ├── [ 826]  ca.crt
+    │       │   │   │       │           ├── [ 875]  server.crt
+    │       │   │   │       │           └── [ 241]  server.key
+    │       │   │   │       ├── [4.0K]  tlsca
+    │       │   │   │       │   ├── [ 241]  7b50b613ab7f8142a9f3c1a7b546c9f042026ffc7439fa37b6c5c0eb91ae0c1d_sk
+    │       │   │   │       │   └── [ 826]  tlsca.example.com-cert.pem
+    │       │   │   │       └── [4.0K]  users
+    │       │   │   │           └── [4.0K]  Admin@example.com
+    │       │   │   │               ├── [4.0K]  msp
+    │       │   │   │               │   ├── [4.0K]  admincerts
+    │       │   │   │               │   │   └── [ 769]  Admin@example.com-cert.pem
+    │       │   │   │               │   ├── [4.0K]  cacerts
+    │       │   │   │               │   │   └── [ 818]  ca.example.com-cert.pem
+    │       │   │   │               │   ├── [4.0K]  keystore
+    │       │   │   │               │   │   └── [ 241]  c6211e0b87d5ac94276dbf92e4cfadf385ee78e1c46cffb9a2e454e090736065_sk
+    │       │   │   │               │   ├── [4.0K]  signcerts
+    │       │   │   │               │   │   └── [ 769]  Admin@example.com-cert.pem
+    │       │   │   │               │   └── [4.0K]  tlscacerts
+    │       │   │   │               │       └── [ 826]  tlsca.example.com-cert.pem
+    │       │   │   │               └── [4.0K]  tls
+    │       │   │   │                   ├── [ 826]  ca.crt
+    │       │   │   │                   ├── [ 814]  server.crt
+    │       │   │   │                   └── [ 241]  server.key
+    │       │   │   └── [4.0K]  peerOrganizations
+    │       │   │       └── [4.0K]  org1.example.com
+    │       │   │           ├── [4.0K]  ca
+    │       │   │           │   ├── [ 241]  19ab65abbb04807dad12e4c0a9aaa6649e70868e3abd0217a322d89e47e1a6ae_sk
+    │       │   │           │   └── [ 843]  ca.org1.example.com-cert.pem
+    │       │   │           ├── [4.0K]  msp
+    │       │   │           │   ├── [4.0K]  admincerts
+    │       │   │           │   │   └── [ 790]  Admin@org1.example.com-cert.pem
+    │       │   │           │   ├── [4.0K]  cacerts
+    │       │   │           │   │   └── [ 843]  ca.org1.example.com-cert.pem
+    │       │   │           │   └── [4.0K]  tlscacerts
+    │       │   │           │       └── [ 851]  tlsca.org1.example.com-cert.pem
+    │       │   │           ├── [4.0K]  peers
+    │       │   │           │   └── [4.0K]  peer0.org1.example.com
+    │       │   │           │       ├── [4.0K]  msp
+    │       │   │           │       │   ├── [4.0K]  admincerts
+    │       │   │           │       │   │   └── [ 790]  Admin@org1.example.com-cert.pem
+    │       │   │           │       │   ├── [4.0K]  cacerts
+    │       │   │           │       │   │   └── [ 843]  ca.org1.example.com-cert.pem
+    │       │   │           │       │   ├── [4.0K]  keystore
+    │       │   │           │       │   │   └── [ 241]  dfb17cf51dc061d585b4850599be0e4b8b7cc8cc363a67c23bc03c6c5393b0e0_sk
+    │       │   │           │       │   ├── [4.0K]  signcerts
+    │       │   │           │       │   │   └── [ 790]  peer0.org1.example.com-cert.pem
+    │       │   │           │       │   └── [4.0K]  tlscacerts
+    │       │   │           │       │       └── [ 851]  tlsca.org1.example.com-cert.pem
+    │       │   │           │       └── [4.0K]  tls
+    │       │   │           │           ├── [ 851]  ca.crt
+    │       │   │           │           ├── [ 895]  server.crt
+    │       │   │           │           └── [ 241]  server.key
+    │       │   │           ├── [4.0K]  tlsca
+    │       │   │           │   ├── [ 241]  ed9a007fe080f78d1af5410dbf35cedac9781ce6808f3c3573b748eb0de142ac_sk
+    │       │   │           │   └── [ 851]  tlsca.org1.example.com-cert.pem
+    │       │   │           └── [4.0K]  users
+    │       │   │               └── [4.0K]  Admin@org1.example.com
+    │       │   │                   ├── [4.0K]  msp
+    │       │   │                   │   ├── [4.0K]  admincerts
+    │       │   │                   │   │   └── [ 790]  Admin@org1.example.com-cert.pem
+    │       │   │                   │   ├── [4.0K]  cacerts
+    │       │   │                   │   │   └── [ 843]  ca.org1.example.com-cert.pem
+    │       │   │                   │   ├── [4.0K]  keystore
+    │       │   │                   │   │   └── [ 241]  114aab0e76bf0c78308f89efc4b8c9423e31568da0c340ca187a9b17aa9a4457_sk
+    │       │   │                   │   ├── [4.0K]  signcerts
+    │       │   │                   │   │   └── [ 790]  Admin@org1.example.com-cert.pem
+    │       │   │                   │   └── [4.0K]  tlscacerts
+    │       │   │                   │       └── [ 851]  tlsca.org1.example.com-cert.pem
+    │       │   │                   └── [4.0K]  tls
+    │       │   │                       ├── [ 851]  ca.crt
+    │       │   │                       ├── [ 834]  server.crt
+    │       │   │                       └── [ 241]  server.key
+    │       │   ├── [3.5K]  crypto-config.yaml
+    │       │   ├── [3.0K]  docker-compose.yml
+    │       │   └── [ 268]  howtobuild.txt
+    │       ├── [1.1K]  createComposerProfile.sh
+    │       ├── [ 459]  downloadFabric.sh
+    │       ├── [ 884]  startFabric.sh
+    │       ├── [ 309]  stopFabric.sh
+    │       └── [ 522]  teardownFabric.sh
+    ├── [ 791]  _loader.sh
+    ├── [ 519]  package.json
+    ├── [ 200]  startFabric.sh
+    ├── [  82]  stopFabric.sh
+    ├── [1.0K]  teardownAllDocker.sh
+    └── [  82]  teardownFabric.sh
 
 59 directories, 76 files
 
@@ -401,5 +428,75 @@ $ cat ~/.composer-credentials/PeerAdmin | jq .
     }
   }
 }
+```
+### 下載basic-sample-network開發
 
+* https://github.com/dltdojo/composer-sample-networks/tree/master/packages/basic-sample-network
+* https://github.com/hyperledger/composer-sample-networks
+* 先啟動網路
+* 下載composer-sample-networks
+* VSCode開啟 \\DEVIP\smb\composer-sample-networks 編輯
+
+```
+$ ./composer.sh
+$ pwd
+/home/dltdojo/smb/composer
+$ cd /home/dltdojo/smb && git clone https://github.com/dltdojo/composer-sample-networks.git && cd composer-sample-networks
+```
+
+### 修改basic-sample-network網路後匯出bna
+
+* lib/smaple.js 
+* models/sample.cto
+* permissions.acl
+* dist/basic-sample-network.bna
+* http://DEVIP:8080/
+
+```
+$ pwd
+/home/dltdojo/smb/composer-sample-networks
+$ cd packages/basic-sample-network/
+$ npm run prepublish
+
+> basic-sample-network@0.1.1 prepublish /home/dltdojo/smb/composer-sample-networks/packages/basic-sample-network
+> mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/basic-sample-network.bna
+
+
+Creating Business Network Archive
+
+
+Looking for package.json of Business Network Definition
+        Input directory: /home/dltdojo/smb/composer-sample-networks/packages/basic-sample-network
+
+Found:
+        Description: The Hello World of Hyperledger Composer samples
+        Name: basic-sample-network
+        Identifier: basic-sample-network@0.1.1
+
+Written Business Network Definition Archive file to
+        Output file: ./dist/basic-sample-network.bna
+
+Command succeeded
+```
+
+### 停止Fabric測試網路
+
+```
+$ cd /home/dltdojo/smb/composer/
+$ ./composer.sh stop
+Stopping all Docker containers
+Killing all running containers
+d8dcdd8f968c
+04f6ff5100fc
+74fc987bf47b
+e9a8cc6f1376
+1f0f631ba571
+d92bf14f2b78
+Removing all containers
+d8dcdd8f968c
+04f6ff5100fc
+74fc987bf47b
+e9a8cc6f1376
+1f0f631ba571
+d92bf14f2b78
 ```
