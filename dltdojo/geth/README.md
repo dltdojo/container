@@ -93,6 +93,8 @@ true
 ###  預先建置帳戶、開啟挖礦以及解鎖的dev節點並新增帳戶轉帳
 
 ```
+$ pwd
+/home/dltdojo/smb/container/dltdojo/geth
 $ docker-compose up -d
 $ docker ps
 CONTAINER ID        IMAGE                COMMAND             CREATED             STATUS              PORTS                    NAMES
