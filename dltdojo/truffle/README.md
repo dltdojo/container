@@ -302,3 +302,104 @@ Saving successful migration to network...
 Saving artifacts...
 
 ```
+
+### 前端+鏈端
+
+* webroot/index.html
+* src/mytoken.js HttpProvider("http://192.168.2.106:8545") 修改成為 http://DEVIP:8545
+* testrpc 開啟後須先 truffle migrate 部署合約
+
+```
+$ npm i
+$ testrpc &
+ EthereumJS TestRPC v4.0.1 (ganache-core: 1.0.1)
+
+Available Accounts
+==================
+(0) 0xa9c7d2286f5007becec831b184129e1960a1f953
+(1) 0x68c12da208bb6e2c111df894e32a10606775a952
+(2) 0x21cc8013755ac538c96c9045919b026a4a732394
+(3) 0xccfafcfa91e552d12cddc2d1ac976927a979e3e0
+(4) 0x61d150272add3ad6c9ad1e87332f815767346dbb
+(5) 0xd8ba6414a666521748f36971b84240d241c8c625
+(6) 0x7b9dd95b58d6fdf3697bf6469050271f8a5b3493
+(7) 0x5beca80cafa2ae61bf64c60a7e5a0e9bbb2f3475
+(8) 0x1b7412f071d76ba2c8129b19612fe90ec36d7d63
+(9) 0x0ddbb3e4a6643918140868195eb3d7b71d89848d
+
+Private Keys
+==================
+(0) 67fd2e086da2378b34bf06608abd74e82c39d91ff2aa80f420d9ead060c43a8e
+(1) 048a6eb5b6fdc691a481a636e1bc79a644e0a5bcb5e5b328905f9b4bae25f398
+(2) 0371551e7ac3d8f8d9266a91e57d0cea3d23bfccc5ca0ee6e5c7c4fd267fbc08
+(3) b8396d0258bd775f50beff0060564a4f9d4da9e4b8c09c4ffd3e2391daad68f8
+(4) c29c9edd921715af5847ba944d396191c2e56f64cc528406f0e2f4af1ebfd00e
+(5) ab77ac5e7525d424c55d5b9cbb76187542de004735ff8ceece9bb937ade52d4d
+(6) e5719b249fc9662915345cf7ba4eff8572756ca2fb9a4256136061868de5eb67
+(7) 37547e8dd264514e194770a017e0dde9b0a533b7320e2996a7c887de869b995e
+(8) 140b9ebc754671e1aaaaeed7976a623205fe57116dee8c91eb0eabfb5d9042ec
+(9) 83f8663cf31487f473d87cdb11311fc76fcd1b6d3211890930d5a9a23da88308
+
+HD Wallet
+==================
+Mnemonic:      mail brass clutch supreme sniff receive weapon canyon deer protect tunnel wrestle
+Base HD Path:  m/44'/60'/0'/0/{account_index}
+
+Listening on localhost:8545
+
+$ truffle migrate
+
+$ npm run all
+
+> mytoken@0.0.1 watch /home/dltdojo/smb/container/dltdojo/truffle/mytoken
+> webpack --display-error-details --watch
+
+
+> mytoken@0.0.1 sync /home/dltdojo/smb/container/dltdojo/truffle/mytoken
+> browser-sync start -s webroot -f webroot
+
+
+Webpack is watching the files…
+
+[Browsersync] Access URLs:
+ --------------------------------------
+       Local: http://localhost:3000
+    External: http://192.168.2.106:3000
+ --------------------------------------
+          UI: http://localhost:3001
+ UI External: http://192.168.2.106:3001
+ --------------------------------------
+[Browsersync] Serving files from: webroot
+[Browsersync] Watching files...
+[Browsersync] Couldn't open browser (if you are using BrowserSync in a headless environment, you might want to set the open option to false)
+[Browsersync] Reloading Browsers...
+Hash: 97c7e9f87336e04718ef
+Version: webpack 2.7.0
+Time: 1185ms
+ Asset    Size  Chunks                    Chunk Names
+ddj.js  775 kB       0  [emitted]  [big]  ddj
+  [11] ./~/web3/lib/web3/property.js 3.88 kB {0} [built]
+  [12] ./~/bignumber.js/bignumber.js 99.7 kB {0} [built]
+  [13] ./~/web3/lib/utils/sha3.js 1.19 kB {0} [built]
+  [17] ./~/web3/lib/web3/iban.js 6.01 kB {0} [built]
+  [19] (webpack)/buildin/global.js 509 bytes {0} [built]
+  [20] ./~/web3/index.js 193 bytes {0} [built]
+  [34] ./build/contracts/MyToken.json 12 kB {0} [built]
+  [35] ./~/truffle-contract/index.js 2.64 kB {0} [built]
+  [70] ./~/truffle-contract-schema/index.js 5.4 kB {0} [built]
+  [74] ./~/truffle-contract/contract.js 23.4 kB {0} [built]
+  [90] ./~/web3/lib/web3.js 4.53 kB {0} [built]
+  [98] ./~/web3/lib/web3/methods/db.js 1.64 kB {0} [built]
+  [99] ./~/web3/lib/web3/methods/eth.js 10.1 kB {0} [built]
+ [100] ./~/web3/lib/web3/methods/net.js 1.5 kB {0} [built]
+ [110] ./src/mytoken.js 1.43 kB {0} [built]
+    + 96 hidden modules
+
+```
+
+### 停止前端開發
+
+```
+Ctrl+c
+$ pkill node
+```

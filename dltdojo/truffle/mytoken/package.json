@@ -1,0 +1,25 @@
+{
+  "name": "mytoken",
+  "version": "0.0.1",
+  "description": "ERC20 MyToken",
+  "scripts": {
+    "test": "mocha",
+    "all": "npm-run-all --parallel watch sync",
+    "watch": "webpack --display-error-details --watch",
+    "sync": "browser-sync start -s webroot -f webroot"
+  },
+  "license": "CC0-1.0",
+  
+  "dependencies": {
+
+  },
+
+  "devDependencies": {
+    "browser-sync": "^2.18.12",
+    "mocha": "^3.2.0",
+    "npm-run-all": "^4.0.2",
+    "truffle-contract": "^2.0.1",
+    "web3": "^0.19.1",
+    "webpack": "^2.6.1"
+  }
+}
