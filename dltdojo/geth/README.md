@@ -16,19 +16,51 @@ VM環境+Docker可能有時間同步問題
 ```
 $ pwd
 /home/dltdojo/smb/container/dltdojo/geth
-$ docker run -it --rm ethereum/client-go geth --fast --cache=512 console
+$ docker run -it --rm ethereum/client-go --fast --cache=512
 
 INFO [07-21|13:25:15] Imported new block headers               count=192 elapsed=968.477ms number=192 hash=723899…123390 ignored=0
 INFO [07-21|13:25:15] Imported new block receipts              count=2   elapsed=177.543µs number=2   hash=b495a1…4698c9 ignored=0
 
 ```
 
+### 啟動節點連接比以太坊測試網路Rinkeby
+
+```
+$ docker run -it --rm -v $(pwd)/rinkeby:/root/.rinkeby dltdojo/geth:1.6.7 ./rinkeby.sh
+Ctrl + C
+$ tree -h rinkeby
+rinkeby
+├── [4.0K]  geth
+│   ├── [4.0K]  chaindata
+│   │   ├── [ 81K]  000001.log
+│   │   ├── [  16]  CURRENT
+│   │   ├── [   0]  LOCK
+│   │   ├── [ 358]  LOG
+│   │   └── [  54]  MANIFEST-000000
+│   ├── [4.0K]  lightchaindata
+│   │   ├── [ 50K]  000002.ldb
+│   │   ├── [6.1M]  000003.log
+│   │   ├── [  16]  CURRENT
+│   │   ├── [   0]  LOCK
+│   │   ├── [1.0K]  LOG
+│   │   └── [ 218]  MANIFEST-000004
+│   ├── [   0]  LOCK
+│   ├── [  64]  nodekey
+│   └── [4.0K]  nodes
+│       ├── [1.8K]  000001.log
+│       ├── [  16]  CURRENT
+│       ├── [   0]  LOCK
+│       ├── [ 434]  LOG
+│       └── [  54]  MANIFEST-000000
+└── [4.0K]  keystore [error opening dir]
+
+5 directories, 18 files
+
+```
+
 ### 啟動節點連接比以太坊dev模式
 
 ```
-$ docker build -f Dockerfile.all -t dltdojo/geth:1.6.7.all .
-$ docker build -t dltdojo/geth:1.6.7 .
-$ docker push dltdojo/geth:1.6.7
 $ docker run -d dltdojo/geth:1.6.7
 2db8bba32de7062841fc8b658926f03c33eaff3daaf23c6ae07f698ffe334004
 

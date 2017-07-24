@@ -1,3 +1,13 @@
+### Update dltdojo/geth:1.6.7
+
+```
+$ docker build -t dltdojo/geth:1.6.7 .
+$ docker run -it --rm dltdojo/geth:1.6.7 ls
+attach.sh       rinkeby.json    testaccount.sh
+gethload.js     start.sh        testrpc.sh
+$ docker run -it --rm dltdojo/geth:1.6.7 ./rinkeyb.sh
+```
+
 ### dltdojo/geth:1.6.7
 
 ```
