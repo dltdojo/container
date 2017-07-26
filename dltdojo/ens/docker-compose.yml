@@ -1,0 +1,9 @@
+version: '2'
+services:
+  rinkeby:
+    image: dltdojo/geth:1.6.7
+    command: ./rinkeby.sh
+    volumes:
+      - ./rinkeby:/root/.rinkeby
+    ports:
+      - "8545:8545"
