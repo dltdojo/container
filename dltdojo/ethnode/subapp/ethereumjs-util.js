@@ -1,0 +1,10 @@
+var ethUtils = require('ethereumjs-util')
+var BN = require('bn.js')
+var SECP256K1_N = new ethUtils.BN('fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141', 16)
+var privKeyHex = SECP256K1_N.subn(1).toString(16)
+var privKey = Buffer.from(privKeyHex, 'hex')
+var isValid = ethUtils.isValidPrivate(privKey)
+var pubKey = ethUtils.privateToPublic(privKey)
+var address = ethUtils.publicToAddress(pubKey)
+var r = { privKey: privKey.toString('hex'), pubKey: pubKey.toString('hex'), address: address.toString('hex') }
+console.log(JSON.stringify(r))
