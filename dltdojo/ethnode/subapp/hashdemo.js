@@ -44,8 +44,27 @@ function calcHash160() {
     }
 }
 
-function calcKeccak(){
+function calcKeccakEthAddress(){
     
+    // accounts - How are ethereum addresses generated? - Ethereum Stack Exchange https://ethereum.stackexchange.com/questions/3542/how-are-ethereum-addresses-generated
+    // Private Key: A randomly selected positive integer (represented as a byte array of length 32 in big-endian form) in the range [1, secp256k1n − 1].
+    // Take the Keccak-256 hash of the public key.
+    // Take the last 40 characters / 20 bytes of this public key (Keccak-256). 
+    var privKey = Buffer.from('0000000000000000000000000000000000000000000000000000000000000001','hex')
+    var pubKey = ethUtils.privateToPublic(privKey)
+    var keccak256 = ethUtils.sha3(pubKey)
+    var address = ethUtils.publicToAddress(pubKey)
+    // Rename/alias sha3 to minimize confusion with SHA-3 standard · Issue #59 https://github.com/ethereum/EIPs/issues/59
+    // capitals-based checksum
+    // https://ethereum.stackexchange.com/questions/267/why-dont-ethereum-addresses-have-checksums
+    // https://github.com/ethereumjs/ethereumjs-util/blob/master/index.js#L440
+    return {
+        privateKey: privKey.toString('hex'),
+        publicKey: pubKey.toString('hex'),
+        keccak256: keccak256.toString('hex'),
+        address: address.toString('hex'),
+        checksumAddress: ethUtils.toChecksumAddress(address.toString('hex'))
+    }
 }
 
 // https://zh.wikipedia.org/wiki/SHA-3
@@ -64,7 +83,8 @@ var result = {
     keccak256: { msg: msg, hash: ethUtils.sha3(msg).toString('hex') },
     sha3_256: { msg: msg, hash: sha3_256(msg) },
     hash256: calcHash256(),
-    hash160: calcHash160()
+    hash160: calcHash160(),
+    ethaddress:calcKeccakEthAddress()
 }
 
 console.log(JSON.stringify(result, null, 2))
