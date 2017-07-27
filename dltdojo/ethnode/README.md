@@ -1,9 +1,9 @@
 ### dltdojo/ethnode
 
 ```
-$ docker build -t dltdojo/ethnode:8.a.1 .
+$ docker build -t dltdojo/ethnode:6.a.1 .
 $ docker images | grep ethnode
-$ docker push dltdojo/ethnode:8.a.1
+$ docker push dltdojo/ethnode:6.a.1
 ```
 
 * Create full Ethereum wallet, keypair and address https://kobl.one/blog/create-full-ethereum-keypair-and-address/
