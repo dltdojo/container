@@ -1,0 +1,7 @@
+version: '2'
+services:
+  solidity:
+    build: .
+    image: dltdojo/browser-solidity
+    ports:
+        - "8080:8080"

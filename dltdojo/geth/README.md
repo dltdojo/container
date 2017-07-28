@@ -61,6 +61,15 @@ rinkeby
 ### 啟動節點連接比以太坊dev模式
 
 ```
+docker-compose up -d geth
+docker-compose exec geth bash
+geth attach http://localhost:8545
+geth attach
+```
+
+log
+
+```
 $ docker run -d dltdojo/geth:1.6.7
 2db8bba32de7062841fc8b658926f03c33eaff3daaf23c6ae07f698ffe334004
 
@@ -84,8 +93,8 @@ INFO [07-13|07:08:16] RLPx listener up                         self="enode://2a9
 INFO [07-13|07:08:16] IPC endpoint opened: /root/.ethereum/geth.ipc
 
 $ docker exec -it 2db8 bash
-bash-4.3# 
 
+bash-4.3# geth attach http://localhost:8545
 Welcome to the Geth JavaScript console!
 
 instance: Geth/v1.6.7-stable/linux-amd64/go1.9beta2
@@ -104,35 +113,192 @@ instance: Geth/v1.6.7-stable/linux-amd64/go1.9beta2
   getWhisper: function(callback)
 }
 > exit
+```
 
+### step 1
+
+* Accounts, Transactions, Gas, and Block Gas Limits in Ethereum http://hudsonjameson.com/2017-06-27-accounts-transactions-gas-ethereum/
+* Ethereum, Gas, Fuel, & Fees – ConsenSys Media https://media.consensys.net/ethereum-gas-fuel-and-fees-3333e17fe1dc
+
+```
+personal.newAccount("pass1")
+personal.newAccount("pass2")
+loadScript("/opt/geth/gethload.js")
+miner.start()
+checkAllBalances()
+personal.unlockAccount(eth.accounts[0], "pass1", 3600)
+personal.unlockAccount(eth.accounts[1], "pass2", 3600)
+checkAllBalances()
+```
+
+log
+
+```
 bash-4.3# geth attach
 Welcome to the Geth JavaScript console!
 
 instance: Geth/v1.6.7-stable/linux-amd64/go1.9beta2
  modules: admin:1.0 debug:1.0 eth:1.0 miner:1.0 net:1.0 personal:1.0 rpc:1.0 shh:1.0 txpool:1.0 web3:1.0
 
-> personal.newAccount("pass")
-"0x00c497c6e1ca8bafbcbed433c8fe297f4abe2168"
-> miner.start()
-null
+> personal.newAccount("pass1")
+"0xdae529561e9b9786083ed833f66ff63c127f77d0"
+> personal.newAccount("pass2")
+"0xf3e64a0100d88b6fb2e214effeb3e6250ef76f10"
 > loadScript("/opt/geth/gethload.js")
 true
+> miner.start()
+null
 > checkAllBalances()
-  eth.accounts[0]:      0x00c497c6e1ca8bafbcbed433c8fe297f4abe2168      balance: 220 ether
-  Total balance: 220 ether
+  eth.accounts[0]:      0xdae529561e9b9786083ed833f66ff63c127f77d0      balance: 60 ether
+  eth.accounts[1]:      0xf3e64a0100d88b6fb2e214effeb3e6250ef76f10      balance: 0 ether
+  Total balance: 60 ether
+undefined
+> personal.unlockAccount(eth.accounts[0], "pass1", 3600)
+true
+> personal.unlockAccount(eth.accounts[1], "pass2", 3600)
+true
+> checkAllBalances()
+  eth.accounts[0]:      0xdae529561e9b9786083ed833f66ff63c127f77d0      balance: 65 ether
+  eth.accounts[1]:      0xf3e64a0100d88b6fb2e214effeb3e6250ef76f10      balance: 0 ether
+  Total balance: 65 ether
+```
+
+### step 2
+
+* http://web3js.readthedocs.io/en/1.0/web3-utils.html?highlight=unit
+
+```
+checkAllBalances()
+txid1 = eth.sendTransaction({from:eth.accounts[0], to:eth.accounts[1], value: web3.toWei(2.1, "ether")})
+checkAllBalances()
+web3.eth.getTransaction(txid1)
+web3.eth.getTransactionReceipt(txid1)
+web3.eth.gasPrice
+txid2 = eth.sendTransaction({from:eth.accounts[1], to:eth.accounts[0], value: web3.toWei(1.1, "ether"), gasPrice: web3.toWei(20,"gwei")})
+checkAllBalances()
+web3.eth.getTransaction(txid2)
+web3.eth.getTransactionReceipt(txid2)
+```
+
+#### log
+
+```
+> checkAllBalances()
+  eth.accounts[0]:      0xdae529561e9b9786083ed833f66ff63c127f77d0      balance: 315 ether
+  eth.accounts[1]:      0xf3e64a0100d88b6fb2e214effeb3e6250ef76f10      balance: 0 ether
+  Total balance: 315 ether
+undefined
+> txid1 = eth.sendTransaction({from:eth.accounts[0], to:eth.accounts[1], value: web3.toWei(2.1, "ether")})
+"0xb67507666f231cbe41f512a672b4b055c3284d6a28c519928d5cfd0a5d8c8698"
+> checkAllBalances()
+  eth.accounts[0]:      0xdae529561e9b9786083ed833f66ff63c127f77d0      balance: 325 ether
+  eth.accounts[1]:      0xf3e64a0100d88b6fb2e214effeb3e6250ef76f10      balance: 0 ether
+  Total balance: 325 ether
+undefined
+> web3.eth.getTransaction(txid1)
+{
+  blockHash: "0xa20b247567e09918313bde8aa323fa53fa8eb8b9765e5f6f657169d9209b6f69",
+  blockNumber: 66,
+  from: "0xdae529561e9b9786083ed833f66ff63c127f77d0",
+  gas: 90000,
+  gasPrice: 0,
+  hash: "0xb67507666f231cbe41f512a672b4b055c3284d6a28c519928d5cfd0a5d8c8698",
+  input: "0x",
+  nonce: 0,
+  r: "0xaed69279789456114cd0573a2643e83ec07a713cbc41327403b8359c14c779d0",
+  s: "0x7a83d10514fdea0838ac1ef143aad02a0d726b97ad1d69c9987f3af15b3c4ae2",
+  to: "0xf3e64a0100d88b6fb2e214effeb3e6250ef76f10",
+  transactionIndex: 0,
+  v: "0xa96",
+  value: 2100000000000000000
+}
+> web3.eth.getTransactionReceipt(txid1)
+{
+  blockHash: "0xa20b247567e09918313bde8aa323fa53fa8eb8b9765e5f6f657169d9209b6f69",
+  blockNumber: 66,
+  contractAddress: null,
+  cumulativeGasUsed: 21000,
+  from: "0xdae529561e9b9786083ed833f66ff63c127f77d0",
+  gasUsed: 21000,
+  logs: [],
+  logsBloom: "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+  root: "0x4093463b2957f2b8a2f7909f36833f7e6e5dd6bd03fc60b0083c23d46194d901",
+  to: "0xf3e64a0100d88b6fb2e214effeb3e6250ef76f10",
+  transactionHash: "0xb67507666f231cbe41f512a672b4b055c3284d6a28c519928d5cfd0a5d8c8698",
+  transactionIndex: 0
+}
+> web3.eth.gasPrice
+0
+> txid2 = eth.sendTransaction({from:eth.accounts[1], to:eth.accounts[0], value: web3.toWei(1.1, "ether"), gasPrice: web3.toWei(20,"gwei")})
+"0x016efad818c75a1a2593b6b265de2cecde62f7e01f8ddcd5fc469b5bd0a53d8a"
+> checkAllBalances()
+  eth.accounts[0]:      0xdae529561e9b9786083ed833f66ff63c127f77d0      balance: 402.9 ether
+  eth.accounts[1]:      0xf3e64a0100d88b6fb2e214effeb3e6250ef76f10      balance: 2.1 ether
+  Total balance: 405 ether
+undefined
+> web3.eth.getTransaction(txid2)
+{
+  blockHash: "0x0000000000000000000000000000000000000000000000000000000000000000",
+  blockNumber: null,
+  from: "0xf3e64a0100d88b6fb2e214effeb3e6250ef76f10",
+  gas: 90000,
+  gasPrice: 20000000000,
+  hash: "0x016efad818c75a1a2593b6b265de2cecde62f7e01f8ddcd5fc469b5bd0a53d8a",
+  input: "0x",
+  nonce: 0,
+  r: "0x84151542c3d6ea1c6f55778d24abe7a784c0a781b4a118c628e2bebb4f4f0a8d",
+  s: "0x22fc01e78e43858cf5eac663159fd10a4a2625353ee494da4fd538ad8a138",
+  to: "0xdae529561e9b9786083ed833f66ff63c127f77d0",
+  transactionIndex: 0,
+  v: "0xa96",
+  value: 1100000000000000000
+}
+> web3.eth.getTransactionReceipt(txid2)
+{
+  blockHash: "0xf993f756c5a0b1b1f0e9bab1c8017e91ef80094c4f18c094bcbe2bae5be9d0bf",
+  blockNumber: 83,
+  contractAddress: null,
+  cumulativeGasUsed: 21000,
+  from: "0xf3e64a0100d88b6fb2e214effeb3e6250ef76f10",
+  gasUsed: 21000,
+  logs: [],
+  logsBloom: "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+  root: "0xbeb16bc5a92eae7a342d4056835b96450edcf63e78f790d768decd94c016afdf",
+  to: "0xdae529561e9b9786083ed833f66ff63c127f77d0",
+  transactionHash: "0x016efad818c75a1a2593b6b265de2cecde62f7e01f8ddcd5fc469b5bd0a53d8a",
+  transactionIndex: 0
+}
+```
+
+### Smart Contract
+
+* Remix http://ethereum.github.io/browser-solidity
+* compilation - How to compile Solidity contracts with Geth v1.6? - Ethereum Stack Exchange  https://ethereum.stackexchange.com/questions/15435/how-to-compile-solidity-contracts-with-geth-v1-6
+* https://alanbuxton.wordpress.com/2017/07/19/first-steps-with-ethereum-private-networks-and-smart-contracts-on-ubuntu-16-04/
+* browser solidity url http://<DEVIP>:8080/
+* SimpleStorage.sol
+* Contract - Environment - Web3 Provider - http://<DEVIP>:8545
+* create - set - get
+
+```
+docker-compose up -d solidity
 ```
 
 ###  預先建置帳戶、開啟挖礦以及解鎖的dev節點並新增帳戶轉帳
 
+* testrpc.sh
+
 ```
 $ pwd
 /home/dltdojo/smb/container/dltdojo/geth
-$ docker-compose up -d
+$ docker-compose up -d testrpc
 $ docker ps
-CONTAINER ID        IMAGE                COMMAND             CREATED             STATUS              PORTS                    NAMES
-bb906667dd26        dltdojo/geth:1.6.7   "./testrpc.sh"      2 seconds ago       Up 2 seconds        0.0.0.0:8545->8545/tcp   geth_geth_1
+CONTAINER ID        IMAGE                      COMMAND                CREATED             STATUS              PORTS                    NAMES
+349adb72dad2        dltdojo/geth:1.6.7         "./testrpc.sh"         4 seconds ago       Up 4 seconds        0.0.0.0:9545->8545/tcp   geth_testrpc_1
+bdc44ec6dc69        dltdojo/browser-solidity   "http-server ."        21 minutes ago      Up 21 minutes       0.0.0.0:8080->8080/tcp   geth_solidity_1
+8e245c524032        dltdojo/geth:1.6.7         "/opt/geth/start.sh"   23 minutes ago      Up 23 minutes       0.0.0.0:8545->8545/tcp   geth_geth_1
 
-$ docker-compose exec geth bash
+$ docker-compose exec testrpc bash
 bash-4.3# ./attach.sh
 Welcome to the Geth JavaScript console!
 
@@ -164,5 +330,4 @@ undefined
 > exit
 bash-4.3# exit
 exit
-
 ```
