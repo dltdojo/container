@@ -1,0 +1,16 @@
+version: '2'
+services:
+  dev16:
+    image: parity/parity:v1.6.10
+    command: --chain dev --ui-no-validation --jsonrpc-interface all --jsonrpc-hosts all --ui-interface 0.0.0.0
+    ports:
+        - "8545:8545"
+        - "8180:8180"
+        - "8080:8080"
+  dev17:
+    image: parity/parity:v1.7.0
+    command: --chain dev --ui-no-validation --jsonrpc-interface all --jsonrpc-hosts all --ui-interface 0.0.0.0
+    ports:
+        - "8545:8545"
+        - "8180:8180"
+        - "8080:8080"
