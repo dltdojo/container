@@ -1,4 +1,4 @@
-const ethUtils = require('ethereumjs-util')
+const ethUtil = require('ethereumjs-util')
 const bitcore = require('bitcore-lib')
 const Base58 = bitcore.encoding.Base58
 const PrivateKey = bitcore.PrivateKey
@@ -15,7 +15,7 @@ function calcHash256() {
     // printed in little-endian
     // GetHash() = 0x000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f
     // https://blockchain.info/block/000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f
-    var hash256 = ethUtils.sha256(ethUtils.sha256(Buffer.from(GenesisBlockHeaderHex, 'hex')))
+    var hash256 = ethUtil.sha256(ethUtil.sha256(Buffer.from(GenesisBlockHeaderHex, 'hex')))
     return { msg: GenesisBlockHeaderHex, hash: hash256.toString('hex') }
 }
 
@@ -34,7 +34,7 @@ function calcHash160() {
     var ppk = new PrivateKey(new BN(1))
     var ppkpub = ppk.toPublicKey().toString()
     var address = ppk.toAddress().toString()
-    var hash160 = ethUtils.ripemd160(ethUtils.sha256(Buffer.from(ppkpub, 'hex'))).toString('hex')
+    var hash160 = ethUtil.ripemd160(ethUtil.sha256(Buffer.from(ppkpub, 'hex'))).toString('hex')
     return {
         privateKey: ppk.toString(),
         publicKey: ppk.toPublicKey().toString(),
@@ -51,9 +51,9 @@ function calcKeccakEthAddress(){
     // Take the Keccak-256 hash of the public key.
     // Take the last 40 characters / 20 bytes of this public key (Keccak-256). 
     var privKey = Buffer.from('0000000000000000000000000000000000000000000000000000000000000001','hex')
-    var pubKey = ethUtils.privateToPublic(privKey)
-    var keccak256 = ethUtils.sha3(pubKey)
-    var address = ethUtils.publicToAddress(pubKey)
+    var pubKey = ethUtil.privateToPublic(privKey)
+    var keccak256 = ethUtil.sha3(pubKey)
+    var address = ethUtil.publicToAddress(pubKey)
     // Rename/alias sha3 to minimize confusion with SHA-3 standard · Issue #59 https://github.com/ethereum/EIPs/issues/59
     // capitals-based checksum
     // https://ethereum.stackexchange.com/questions/267/why-dont-ethereum-addresses-have-checksums
@@ -63,7 +63,7 @@ function calcKeccakEthAddress(){
         publicKey: pubKey.toString('hex'),
         keccak256: keccak256.toString('hex'),
         address: address.toString('hex'),
-        checksumAddress: ethUtils.toChecksumAddress(address.toString('hex'))
+        checksumAddress: ethUtil.toChecksumAddress(address.toString('hex'))
     }
 }
 
@@ -78,9 +78,9 @@ function calcKeccakEthAddress(){
 
 var result = {
     url: "https://github.com/dltdojo/container/tree/master/dltdojo/ethnode/subapp",
-    sha256: { msg: msg, hash: ethUtils.sha256(msg).toString('hex') },
-    ripmd160: { msg: msg, hash: ethUtils.ripemd160(msg).toString('hex') },
-    keccak256: { msg: msg, hash: ethUtils.sha3(msg).toString('hex') },
+    sha256: { msg: msg, hash: ethUtil.sha256(msg).toString('hex') },
+    ripmd160: { msg: msg, hash: ethUtil.ripemd160(msg).toString('hex') },
+    keccak256: { msg: msg, hash: ethUtil.sha3(msg).toString('hex') },
     sha3_256: { msg: msg, hash: sha3_256(msg) },
     hash256: calcHash256(),
     hash160: calcHash160(),

@@ -4,8 +4,10 @@
 const MerkleTools = require('merkle-tools')
 const ethUtil = require('ethereumjs-util')
 const Tx = require('ethereumjs-tx')
+const Account = require('ethereumjs-account')
 const Trie = require('merkle-patricia-tree')
 const rlp = ethUtil.rlp
+const BN = require('bn.js')
 // curl "https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=0x10d4f&boolean=true" -o block0x10d4f.json
 const ethBlockJsonRpc = require('./block0x10d4f.json')
 
@@ -89,7 +91,7 @@ function ethTransactionsRoot() {
     // https://github.com/ethereumjs/ethereumjs-tx/blob/master/index.js#L107
     // https://github.com/ethereumjs/ethereumjs-util/blob/master/index.js#L573
     // rlp.encode(self.raw)
-    
+
     // [English] RLP · ethereum/wiki Wiki https://github.com/ethereum/wiki/wiki/%5BEnglish%5D-RLP
     // The string "dog" = [ 0x83, 'd', 'o', 'g' ]
     // The list [ "cat", "dog" ] = [ 0xc8, 0x83, 'c', 'a', 't', 0x83, 'd', 'o', 'g' ]
@@ -98,15 +100,15 @@ function ethTransactionsRoot() {
 
     // Transactions Trie
     // path : rlp(transactionIndex). transactionIndex is its index within the block it's mined.
-    transactions.forEach((raw,i,a)=>{
+    transactions.forEach((raw, i, a) => {
         var tx = new Tx(raw)
-        txTrie.put(rlp.encode(i),tx.serialize())
+        txTrie.put(rlp.encode(i), tx.serialize())
     })
     // console.log(txTrie.root.toString('hex'))
     // blockchain - Relationship between Transaction Trie and Receipts Trie - Ethereum Stack Exchange https://ethereum.stackexchange.com/questions/5888/relationship-between-transaction-trie-and-receipts-trie
     return {
-        transactionsRoot : transactionsRoot,
-        transactions : transactions,
+        transactionsRoot: transactionsRoot,
+        transactions: transactions,
         txtrieroot: txTrie.root.toString('hex')
     }
 }
@@ -115,16 +117,48 @@ function ethTransactionsRoot() {
 // path : sha3(ethereumAddress)
 // value : rlp(ethereumAccount)
 // ethereumAccount = [nonce,balance,storageRoot,codeHash]
-function ethStateRoot(){
-    var stateRoot = ""
+function ethStateRoot() {
+    var stateTrie = new Trie()
+    var privKey1 = Buffer.from('0000000000000000000000000000000000000000000000000000000000000001', 'hex')
+    var privKey2 = Buffer.from('0000000000000000000000000000000000000000000000000000000000000002', 'hex')
+    var address1 = ethUtil.privateToAddress(privKey1)
+    var address2 = ethUtil.privateToAddress(privKey2)
+
+    var account1 = new Account()
+    account1.balance = '0xf00000000000000001'
+    var account2 = new Account()
+    account2.balance = '0xf00000000000000002'
+    stateTrie.put(address1, account1.serialize(), (err, val) => {
+        stateTrie.put(address2, account2.serialize(), (err, val) => {
+            readStateTrie(stateTrie, address1)
+            readStateTrie(stateTrie, address2)
+            console.log('stateTrie root: ', stateTrie.root.toString('hex'))
+        })
+    })
     return {
-        stateRoot: stateRoot
+        account1: account1,
+        account2: account2,
+        address1: address1.toString('hex'),
+        address2: address2.toString('hex')
     }
+}
+
+function readStateTrie(stateTrie, address) {
+    stateTrie.get(address, (err, val) => {
+        if (err) {
+            console.log(err)
+            return
+        }
+        var account = new Account(val)
+        console.log(account.toJSON())
+    })
 }
 
 var msha1 = merkleStringArray({ hashType: 'SHA1' }, ['a', 'b', 'c', 'd'])
 var msha256 = merkleStringArray({ hashType: 'SHA256' }, ['a', 'b', 'c', 'd'])
 var msha3_256 = merkleStringArray({ hashType: 'SHA3-256' }, ['a', 'b', 'c', 'd'])
+
+var ethStateRoot = ethStateRoot()
 
 var result = {
     msha1: msha1,
@@ -132,9 +166,12 @@ var result = {
     msha3_256: msha3_256,
     btc1: btcHeight1,
     btc100000: btcHeight100000,
-    ethTxRoot : ethTransactionsRoot(),
-    ethStateRoot: ethStateRoot()
+    ethTxRoot: ethTransactionsRoot(),
+    ethStateRoot: ethStateRoot
 }
 
 console.log(JSON.stringify(result, null, 2))
 
+// 
+// fabric/protocol-spec.md at master · hyperledger-archives/fabric https://github.com/hyperledger-archives/fabric/blob/master/docs/protocol-spec.md#321-blockchain
+// 
