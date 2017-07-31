@@ -310,17 +310,14 @@ bash-4.3# cat SimpleStorage.sol:SimpleStorage.abi
 ###  預先建置帳戶、開啟挖礦以及解鎖的dev節點並新增帳戶轉帳
 
 * testrpc.sh
+* Contract - Environment - Web3 Provider - http://<DEVIP>:8545
 
 ```
 $ pwd
 /home/dltdojo/smb/container/dltdojo/geth
+$ docker-compose stop
+$ docker-compose up -d solidity
 $ docker-compose up -d testrpc
-$ docker ps
-CONTAINER ID        IMAGE                      COMMAND                CREATED             STATUS              PORTS                    NAMES
-349adb72dad2        dltdojo/geth:1.6.7         "./testrpc.sh"         4 seconds ago       Up 4 seconds        0.0.0.0:9545->8545/tcp   geth_testrpc_1
-bdc44ec6dc69        dltdojo/browser-solidity   "http-server ."        21 minutes ago      Up 21 minutes       0.0.0.0:8080->8080/tcp   geth_solidity_1
-8e245c524032        dltdojo/geth:1.6.7         "/opt/geth/start.sh"   23 minutes ago      Up 23 minutes       0.0.0.0:8545->8545/tcp   geth_geth_1
-
 $ docker-compose exec testrpc bash
 bash-4.3# ./attach.sh
 Welcome to the Geth JavaScript console!

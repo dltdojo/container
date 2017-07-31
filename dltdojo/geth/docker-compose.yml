@@ -8,7 +8,7 @@ services:
     image: dltdojo/geth:1.6.7
     command: ./testrpc.sh
     ports:
-        - "9545:8545"
+        - "8545:8545"
   solidity:
     image: dltdojo/browser-solidity
     ports:

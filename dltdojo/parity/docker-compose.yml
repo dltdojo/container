@@ -14,3 +14,7 @@ services:
         - "8545:8545"
         - "8180:8180"
         - "8080:8080"
+  solidity:
+    image: dltdojo/browser-solidity
+    ports:
+        - "8380:8080"
