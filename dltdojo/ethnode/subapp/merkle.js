@@ -1,8 +1,13 @@
 // Merkle tree - Wikipedia https://en.wikipedia.org/wiki/Merkle_tree
 // Mastering Bitcoin http://chimera.labs.oreilly.com/books/1234000001802/ch07.html#merkle_trees
 // Tierion/merkle-tools: Tools for creating Merkle trees, generating merkle proofs, and verification of merkle proofs. https://github.com/Tierion/merkle-tools
-
-var MerkleTools = require('merkle-tools')
+const MerkleTools = require('merkle-tools')
+const ethUtil = require('ethereumjs-util')
+const Tx = require('ethereumjs-tx')
+const Trie = require('merkle-patricia-tree')
+const rlp = ethUtil.rlp
+// curl "https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=0x10d4f&boolean=true" -o block0x10d4f.json
+const ethBlockJsonRpc = require('./block0x10d4f.json')
 
 function merkleStringArray(treeOptions, stringArray) {
     var merkleTools = new MerkleTools(treeOptions)
@@ -13,7 +18,7 @@ function merkleStringArray(treeOptions, stringArray) {
         hashType: treeOptions.hashType,
         doubleHash: doubleHash,
         merkleroot: merkleTools.getMerkleRoot().toString('hex'),
-        proofs: toProofs(merkleTools,stringArray)
+        proofs: toProofs(merkleTools, stringArray)
     }
 }
 
@@ -46,9 +51,6 @@ function bitcoinMerkleRoot(txidArray) {
     }
 }
 
-var msha1 = merkleStringArray({ hashType: 'SHA1' }, ['a', 'b', 'c', 'd'])
-var msha256 = merkleStringArray({ hashType: 'SHA256' }, ['a', 'b', 'c', 'd'])
-var msha3_256 = merkleStringArray({ hashType: 'SHA3-256' }, ['a', 'b', 'c', 'd'])
 // 
 // Block #1 https://blockchain.info/block/00000000839a8e6886ab5951d76f411475428afc90947ee320161bbf18eb6048
 // Merkle Root 0e3e2357e806b6cdb1f70b54c3a3a17b6714ee1f0e68bebb44a74b1efd512098
@@ -65,23 +67,73 @@ var btcHeight100000 = bitcoinMerkleRoot(['8c14f0db3df150123e6f3dbbf30f8b955a8249
 // Merkling in Ethereum - Ethereum Blog https://blog.ethereum.org/2015/11/15/merkling-in-ethereum/
 // Patricia Tree · ethereum/wiki Wiki https://github.com/ethereum/wiki/wiki/Patricia-Tree
 // Merkle Patricia Tree (MPT) 树详解 - 风之舞555 - 博客园 http://www.cnblogs.com/fengzhiwu/p/5584809.html
-// stateRoot, transactionsRoot, receiptsRoot
+// stateRoot(Merkle Patricia Trie), transactionsRoot(Merkle tree), receiptsRoot (Merkle tree)
 // Radix tree - Wikipedia https://en.wikipedia.org/wiki/Radix_tree
-// [English] RLP · ethereum/wiki Wiki https://github.com/ethereum/wiki/wiki/%5BEnglish%5D-RLP
 // There is one global state trie, and it updates over time. In it, a path is always: sha3(ethereumAddress) and a value is always: rlp(ethereumAccount). 
 // More specifically an ethereum account is a 4 item array of [nonce,balance,storageRoot,codeHash].
-
 //
-// ethereumjs/merkle-patricia-tree: This is an implementation of the modified merkle patricia tree as specified in the Ethereum's yellow paper. https://github.com/ethereumjs/merkle-patricia-tree
+// blockchain - Ethereum block architecture - Ethereum Stack Exchange https://ethereum.stackexchange.com/questions/268/ethereum-block-architecture/
+// ethereumjs/merkle-patricia-tree: https://github.com/ethereumjs/merkle-patricia-tree
 // eth-proof https://www.npmjs.com/package/eth-proof
 // Exploring Ethereum's state trie with Node.js https://wanderer.github.io/ethereum/nodejs/code/2014/05/21/using-ethereums-tries-with-node/
-// 
+// https://github.com/ethereumjs/ethereumjs-block/blob/master/index.js
+
+function ethTransactionsRoot() {
+    var transactionsRoot = ethBlockJsonRpc.result.transactionsRoot
+    var transactions = ethBlockJsonRpc.result.transactions
+    //console.log(transactionsRoot)
+    //console.log(transactions)
+    var txTrie = new Trie()
+
+    // tx.serialize()
+    // https://github.com/ethereumjs/ethereumjs-tx/blob/master/index.js#L107
+    // https://github.com/ethereumjs/ethereumjs-util/blob/master/index.js#L573
+    // rlp.encode(self.raw)
+    
+    // [English] RLP · ethereum/wiki Wiki https://github.com/ethereum/wiki/wiki/%5BEnglish%5D-RLP
+    // The string "dog" = [ 0x83, 'd', 'o', 'g' ]
+    // The list [ "cat", "dog" ] = [ 0xc8, 0x83, 'c', 'a', 't', 0x83, 'd', 'o', 'g' ]
+    // The empty string ('null') = [ 0x80 ]
+    // The empty list = [ 0xc0 ]
+
+    // Transactions Trie
+    // path : rlp(transactionIndex). transactionIndex is its index within the block it's mined.
+    transactions.forEach((raw,i,a)=>{
+        var tx = new Tx(raw)
+        txTrie.put(rlp.encode(i),tx.serialize())
+    })
+    // console.log(txTrie.root.toString('hex'))
+    // blockchain - Relationship between Transaction Trie and Receipts Trie - Ethereum Stack Exchange https://ethereum.stackexchange.com/questions/5888/relationship-between-transaction-trie-and-receipts-trie
+    return {
+        transactionsRoot : transactionsRoot,
+        transactions : transactions,
+        txtrieroot: txTrie.root.toString('hex')
+    }
+}
+
+// blockchain - Ethereum block architecture - Ethereum Stack Exchange https://ethereum.stackexchange.com/questions/268/ethereum-block-architecture/757
+// path : sha3(ethereumAddress)
+// value : rlp(ethereumAccount)
+// ethereumAccount = [nonce,balance,storageRoot,codeHash]
+function ethStateRoot(){
+    var stateRoot = ""
+    return {
+        stateRoot: stateRoot
+    }
+}
+
+var msha1 = merkleStringArray({ hashType: 'SHA1' }, ['a', 'b', 'c', 'd'])
+var msha256 = merkleStringArray({ hashType: 'SHA256' }, ['a', 'b', 'c', 'd'])
+var msha3_256 = merkleStringArray({ hashType: 'SHA3-256' }, ['a', 'b', 'c', 'd'])
+
 var result = {
     msha1: msha1,
     msha256: msha256,
     msha3_256: msha3_256,
     btc1: btcHeight1,
     btc100000: btcHeight100000,
+    ethTxRoot : ethTransactionsRoot(),
+    ethStateRoot: ethStateRoot()
 }
 
 console.log(JSON.stringify(result, null, 2))
