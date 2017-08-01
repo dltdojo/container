@@ -1,0 +1,20 @@
+version: '2'
+services:
+  node1:
+    image: ipfs/go-ipfs:latest
+    ports:
+      - "4001:4001"
+      - "5001:5001"
+      - "8080:8080"
+  node2:
+    image: ipfs/go-ipfs:latest
+    ports:
+      - "4002:4001"
+      - "5002:5001"
+      - "8082:8080"
+  node3:
+    image: ipfs/go-ipfs:latest
+    ports:
+      - "4003:4001"
+      - "5003:5001"
+      - "8083:8080"
