@@ -1,0 +1,13 @@
+FROM dltdojo/geth:1.6.7.all
+RUN ls -al  /usr/local/bin/
+#
+# dldtojo/geth:1.6.7
+#
+FROM node:6.11.1-alpine
+COPY --from=0 /usr/local/bin/geth /usr/local/bin
+COPY --from=0 /usr/local/bin/swarm /usr/local/bin
+RUN apk --update add bash curl jq tree git
+WORKDIR /opt/geth
+ADD gethload.js testaccount.sh start.sh testrpc.sh attach.sh ./
+RUN chmod +x *.sh
+ENTRYPOINT []
