@@ -1,0 +1,8 @@
+version: '2'
+services:
+  snode1:
+    build: .
+    command: /start.sh
+  snode2:
+    build: .
+    command: /start.sh

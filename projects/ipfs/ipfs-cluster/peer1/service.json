@@ -1,0 +1,17 @@
+{
+    "id": "QmYVrKSDvqVuL9mNt8TTNLMVxheejZK7tU88WKLDhoPjuW",
+    "private_key": "CAASqAkwggSkAgEAAoIBAQCmR1vTxQt/HENN49MxVE5ZSgLILQRbFIVcqS4vcQVm9LWXjQF7+y5kHLSPpnMJacOZEDWYUba4dm2OHIhmSF4X5hgFeUzsMne0r+oshv5G1cWOniiM/tHewjVYIUuIcbiUUbUyL7Uk5xVCxapUA5+OznLRpjvE8aXgsNq3B/TQeSSY1/f3ROql/5RwMc3i7t7IcpTh9RkM2wAiVbBdIkwaY4cXbvLJeikwm8Mwn3k/P6fmVJVhrpKXgdfcvJVoVAFNWkAJvVNFQpyXOANbXve9b3MBpKZVyHRoV5WqnLhkXzjw1+dXCkDa9TgAHimOCGBMuF6psPtBnxAhB3ONF6hHAgMBAAECggEBAJa6ePMu240OAbTJoNhGo/8sp/jtVdV6dKnacpNu0IbTrQkEOSQ6PYNiwgq1x/Hwfe5yUyMQb6InOIhqNPsC/siLO5s6qhAyb3DLRmu2syli/wKZPAkTtQtI4TJSfDXjYH6S0r37oSkikJNGu3ANGMZLPqntFqEgrE1SA/GGtNWEhRBcbCotZ2ecSzNVsAIWxAB9exFXk4rnQiwogJwHT6/ioYP8Fh+25OkKG/1IYkgnlNR0XwZUeJXCq7QKRb+68cT/EJfnVQNLUsycrGSFFR2vuVNooqP90HAIby+vE9OwuW+jiMQiJNXfkuGnRjhoYJGl85orv8az4V5afFzx0oECgYEA0zY6l8XnMfQzrAarWnIy8XB1sHchc3fXzZ02lYNVcyAXZ/PvToubrdSES6ERRnwb2NUt18FkcwbLntRxyTKggFOkdKfjMQ4T7JW77qy7Y67ycciFqCx2IEmEsFzKzLp3kqXjTYZxHkI5HO9WWCn/ac7M+l65cbDC3x8PcKTClSUCgYEAyYnoeVR84PAbziUgQdWBXWuP+ah0NAQKGsmb2AWMH/ZJ1yEqLDkf5IENLBnYHH12AbDuQhiWPtK25+v/iM41dlucd4NB19hPV5TlQUkkiVuee5cn/7FaGbtLjmVWoNgmDxcwesFzqIam1RRAyS/8cd0bbNd7zb5rFWtWbChSqfsCgYBYFqTnSdW7wtKOK5Xpufk/Mx0ShQ0BgHkTuz7ZqpXH1xmL9HPZOWarYBfxBvMSh46Bp59f/btsMehYjNgMBr5j5v6O3LpnaiyrHmPsDkR1NbDN/ciotCpsGt1pRLocGqTmF6OuYKTq7smtJLDJQnLQ6TwaK8mB/iu4LNcersistQKBgQDB12zL1eFOkGKOAdNmvq3wZpZR8B3kMcZuQV8thRhjXYVj7zga1M7B/wXmVu0vadRoh/6BgBhyUEUwCCL9OCjfr/lsUciwjBK0EDf4dRs5Ke/iu13zZmdcvHJNgVay2XKxrQIp74sImoo4A4TUfNz3v0yzgQZIu09PiK/U02u+pQKBgHZ7p7akcVkAWsaPV4qwUAoGwTQHpN8XY8nhAJBCkti5Cs5fjht3OHWsyzAO7WcrIFQHYVyHUBh+/qm63LaFQch9nQSZ8aaHUTq2AWJgP8dE+f6RpQhIdG1mGz/yuAVWggUr8VgDyjwL0euMm9qq8ExQBhj+LRHk7/T1HwGy8Kvp",
+    "cluster_secret": "f2ea0f554543aa57c4ff289d4514c2963d97095dd929dfc5a188d13a18a09d5e",
+    "cluster_peers": [],
+    "bootstrap": [],
+    "leave_on_shutdown": false,
+    "cluster_multiaddress": "/ip4/0.0.0.0/tcp/9096",
+    "api_listen_multiaddress": "/ip4/0.0.0.0/tcp/9094",
+    "ipfs_proxy_listen_multiaddress": "/ip4/0.0.0.0/tcp/9095",
+    "ipfs_node_multiaddress": "/ip4/127.0.0.1/tcp/5001",
+    "state_sync_seconds": 60,
+    "ipfs_sync_seconds": 130,
+    "replication_factor": -1,
+    "monitoring_interval_seconds": 15,
+    "allocation_strategy": "reposize"
+}
