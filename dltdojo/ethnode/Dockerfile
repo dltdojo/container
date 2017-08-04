@@ -16,7 +16,7 @@ WORKDIR /opt/ddj
 ADD package.json /opt/ddj/
 RUN npm install
 
-FROM dltdojo/node:6
+FROM dltdojo/geth:1.6.7
 RUN apk --update add git
 #
 #  globally npm install
