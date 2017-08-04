@@ -74,23 +74,24 @@ $ docker run -d dltdojo/geth:1.6.7
 2db8bba32de7062841fc8b658926f03c33eaff3daaf23c6ae07f698ffe334004
 
 $ docker logs 2db8
-WARN [07-13|07:08:16] No etherbase set and no accounts found as default
-INFO [07-13|07:08:16] Starting peer-to-peer node               instance=Geth/v1.6.7-stable/linux-amd64/go1.9beta2
-INFO [07-13|07:08:16] Allocated cache and file handles         database=/root/.ethereum/geth/chaindata cache=128 handles=1024
-INFO [07-13|07:08:16] Writing custom genesis block
-INFO [07-13|07:08:16] Initialised chain configuration          config="{ChainID: 1337 Homestead: 0 DAO: <nil> DAOSupport: false EIP150: 0 EIP155: 0 EIP158: 0 Metropolis: 9223372036854775807 Engine: ethash}"
-WARN [07-13|07:08:16] Ethash used in test mode
-WARN [07-13|07:08:16] Upgrading db log bloom bins
-INFO [07-13|07:08:16] Bloom-bin upgrade completed              elapsed=57.337µs
-INFO [07-13|07:08:16] Initialising Ethereum protocol           versions="[63 62]" network=1
-INFO [07-13|07:08:16] Loaded most recent local header          number=0 hash=e5be92…38f3bc td=131072
-INFO [07-13|07:08:16] Loaded most recent local full block      number=0 hash=e5be92…38f3bc td=131072
-INFO [07-13|07:08:16] Loaded most recent local fast block      number=0 hash=e5be92…38f3bc td=131072
-INFO [07-13|07:08:16] Starting P2P networking
-INFO [07-13|07:08:16] started whisper v.5.0
-INFO [07-13|07:08:16] HTTP endpoint opened: http://127.0.0.1:8545
-INFO [07-13|07:08:16] RLPx listener up                         self="enode://2a9014d7f3e0728147ef9cfaa0570f51be22eea0ecbbe1a70860cfa5c533862192c87bee11d215e80f947078b2562836e1650c808e63aa363b14f64441de7272@[::]:41117?discport=0"
-INFO [07-13|07:08:16] IPC endpoint opened: /root/.ethereum/geth.ipc
+WARN [08-04|08:06:52] No etherbase set and no accounts found as default
+INFO [08-04|08:06:52] Starting peer-to-peer node               instance=Geth/v1.6.7-stable/linux-amd64/go1.9beta2
+INFO [08-04|08:06:52] Allocated cache and file handles         database=/root/.ethereum/geth/chaindata cache=128 handles=1024
+INFO [08-04|08:06:52] Writing custom genesis block
+INFO [08-04|08:06:52] Initialised chain configuration          config="{ChainID: 1337 Homestead: 0 DAO: <nil> DAOSupport: false EIP150: 0 EIP155: 0 EIP158: 0 Metropolis: 9223372036854775807 Engine: ethash}"
+WARN [08-04|08:06:52] Ethash used in test mode
+WARN [08-04|08:06:52] Upgrading db log bloom bins
+INFO [08-04|08:06:52] Bloom-bin upgrade completed              elapsed=51.587µs
+INFO [08-04|08:06:52] Initialising Ethereum protocol           versions="[63 62]" network=1
+INFO [08-04|08:06:52] Loaded most recent local header          number=0 hash=e5be92…38f3bc td=131072
+INFO [08-04|08:06:52] Loaded most recent local full block      number=0 hash=e5be92…38f3bc td=131072
+INFO [08-04|08:06:52] Loaded most recent local fast block      number=0 hash=e5be92…38f3bc td=131072
+INFO [08-04|08:06:52] Starting P2P networking
+INFO [08-04|08:06:52] started whisper v.5.0
+INFO [08-04|08:06:52] HTTP endpoint opened: http://0.0.0.0:8545
+INFO [08-04|08:06:52] WebSocket endpoint opened: ws://0.0.0.0:8546
+INFO [08-04|08:06:52] RLPx listener up                         self="enode://61ffa4ab886103e162d0e9ba569caa5203b12d7e267ac4655100ccdede2a99639b2afdd7bc762e080b576de0f20c3425d75b91f741608b6e40daae2fb622c36b@[::]:42646?discport=0"
+INFO [08-04|08:06:52] IPC endpoint opened: /root/.ethereum/geth.ipc
 
 $ docker exec -it 2db8 bash
 
