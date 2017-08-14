@@ -17,13 +17,12 @@ ADD package.json /opt/ddj/
 RUN npm install
 
 FROM dltdojo/geth:1.6.7
-RUN apk --update add git
+RUN apk --update add git openssl
 #
 #  globally npm install
 #
 COPY --from=0 /usr/local/lib/node_modules /usr/local/lib/node_modules
 COPY --from=0 /usr/local/bin /usr/local/bin
-#
 #
 WORKDIR /opt/ddj
 COPY --from=0 /opt/ddj/node_modules /opt/ddj/node_modules
