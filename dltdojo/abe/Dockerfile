@@ -11,8 +11,9 @@ RUN apk --update --no-cache add python py-pip bash && \
     # apk --no-cache add boost boost-program_options libevent libzmq openssl su-exec
 
 WORKDIR /bitcoin-abe
+RUN apk --update --no-cache add curl jq openssl tree
 ADD abe-sqlite.conf ./
-ADD start.sh testapp.sh /
+ADD start.sh testapp.sh opreturn.sh /
 RUN chmod a+x /*.sh
 ADD bitcoin.conf /home/bitcoin/.bitcoin/
 CMD ["/start.sh"]
