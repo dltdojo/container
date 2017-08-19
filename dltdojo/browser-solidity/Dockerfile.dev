@@ -1,0 +1,14 @@
+FROM dltdojo/node:6
+RUN apk --update add git build-base musl-dev linux-headers python
+WORKDIR /opt/build
+ENV BUILD_VER=2017-08-19
+RUN git clone --depth=1 https://github.com/ethereum/browser-solidity.git && cd browser-solidity && \
+    npm install && npm run prepublish
+#
+FROM dltdojo/node:6
+WORKDIR /opt/ddj
+COPY --from=0 /opt/build/browser-solidity/build /opt/ddj/build
+COPY --from=0 /opt/build/browser-solidity/assets /opt/ddj/assets
+COPY --from=0 /opt/build/browser-solidity/index.html /opt/ddj/
+RUN npm i -g http-server
+CMD ["http-server","."]

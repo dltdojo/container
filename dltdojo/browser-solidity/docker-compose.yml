@@ -1,7 +1,7 @@
 version: '2'
 services:
-  solidity:
+  remix:
     build: .
-    image: dltdojo/browser-solidity
+    image: dltdojo/remix:70f02ab
     ports:
         - "8080:8080"

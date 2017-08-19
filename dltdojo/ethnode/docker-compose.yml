@@ -6,3 +6,6 @@ services:
   ethnode2:
     image: dltdojo/ethnode:6.a.2
     command: /opt/geth/testrpc.sh
+  truffle:
+    image: dltdojo/ethnode:6.a.2
+    command: tail -f /dev/null
