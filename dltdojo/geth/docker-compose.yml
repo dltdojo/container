@@ -9,6 +9,18 @@ services:
     command: ./testrpc.sh
     ports:
         - "8545:8545"
+  testrpc2:
+    image: dltdojo/geth:1.6.7
+    command: "bash -c \"geth --dev --datadir /root/.ethereum/ --rpc --rpcapi miner,admin,db,personal,eth,net,web3 &\
+        sleep 5 && \
+        /opt/geth/testrpc2.sh && \
+        tail -f /dev/null\""
+  testrpc3:
+    image: dltdojo/geth:1.6.7
+    command: "bash -c \"/opt/geth/start.sh &\
+        sleep 5 && \
+        /opt/geth/testrpc2.sh && \
+        tail -f /dev/null\""
   solidity:
     image: dltdojo/browser-solidity
     ports:
