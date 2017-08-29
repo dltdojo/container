@@ -17,7 +17,7 @@ RUN apk --update add bash curl jq tree git
 RUN npm install -g solc
 WORKDIR /opt/geth
 RUN curl -s https://www.rinkeby.io/rinkeby.json -o rinkeby.json
-ADD gethload.js testaccount.sh start.sh testrpc.sh attach.sh rinkeby.sh SimpleStorage.sol testrpc2.sh ./
+ADD gethload.js testaccount.sh start.sh testrpc.sh attach.sh rinkeby.sh SimpleStorage.sol testrpc2.sh testrpc3.sh ./
 RUN chmod +x *.sh
 ENTRYPOINT []
 # --datadir "/root/.ethereum/"
