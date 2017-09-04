@@ -170,3 +170,9 @@ $ docker-compose stop
 Stopping swarm_snode1_1 ... done
 Stopping swarm_snode2_1 ... done
 ```
+
+### build docker image
+
+```
+$ docker build -t dltdojo/swarmnet:1.6.7 .
+```
