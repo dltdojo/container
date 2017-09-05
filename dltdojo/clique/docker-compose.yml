@@ -16,7 +16,7 @@ services:
       NODE_DIR: "node1"
     volumes:
       - dltdojo:/dltdojo
-    command: "./start.sh"
+    command: "./startdev.sh"
   node2:
     image: dltdojo/clique:1.6.7
     environment:
